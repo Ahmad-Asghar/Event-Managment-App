@@ -1,0 +1,454 @@
+import 'package:date_time_format/date_time_format.dart';
+import 'dart:io';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:e_commerce/Controller/Upload_Event.dart';
+import 'package:e_commerce/Views/nav_bar.dart';
+import 'package:e_commerce/Widgets/Event_data_textfield.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_material_pickers/flutter_material_pickers.dart';
+import 'package:get/get.dart' hide Trans;
+import 'package:image_picker/image_picker.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../Localization/code/local_keys.g.dart';
+import '../Models/UserModel.dart';
+
+class Add_Event extends StatefulWidget {
+  final UserModel userModel;
+  final User firebaseuser;
+  const Add_Event({Key? key, required this.userModel, required this.firebaseuser}) : super(key: key);
+
+  @override
+  State<Add_Event> createState() => _Add_EventState();
+}
+
+class _Add_EventState extends State<Add_Event> {
+  File? imageFile;
+  Upload_Event upload= Upload_Event();
+  Future<void> _selectEventDate(BuildContext context) async {
+    DateTime _selectedDate = DateTime.now();
+    DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: _selectedDate,
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        String date = picked.toString();
+        List<String> date1 = date.split(" ");
+        dateTime.text = date1[0];
+      });
+  }
+
+  Future<void> _selectEndTime(BuildContext context) async {
+    TimeOfDay _selectedTime = TimeOfDay.now();
+
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialEntryMode: TimePickerEntryMode.dial,
+      initialTime: _selectedTime,
+    );
+    if (picked != null && picked != _selectedTime) {
+      setState(() {
+        _selectedTime = picked;
+        endTime.text = _selectedTime.toString();
+      });
+    }
+  }
+
+  void _selectStartTime(BuildContext context) async {
+    TimeOfDay _selectedTime = TimeOfDay.now();
+
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialEntryMode: TimePickerEntryMode.dial,
+      initialTime: _selectedTime,
+    );
+    if (picked != null && picked != _selectedTime) {
+      setState(() {
+        _selectedTime = picked;
+        startTime.text = _selectedTime.toString();
+      });
+    }
+  }
+  selectImageSource(){
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(15),
+                topLeft: Radius.circular(15)
+            )
+        ),
+        context: context,
+        builder: (context) {
+          return Padding(
+            padding:  EdgeInsets.all(4.h),
+            child: Wrap(
+              children: [
+                Padding(
+                  padding:  EdgeInsets.only(bottom: 2.h),
+                  child: ListTile(
+                    selectedTileColor: Colors.yellow[800],
+                    selected: true,
+                    splashColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                    ),
+                    onTap: (){
+
+                      getImagefromGallery();
+
+                      Navigator.pop(context);
+                    },
+                    leading: Icon(Icons.image,
+                      color: Colors.black,),
+                    title: Text('Gallery',style: TextStyle(
+                      color: Colors.black,
+                    ),),
+                  ),
+                ),
+                ListTile(
+                  selectedTileColor: Colors.yellow[800],
+                  selected: true,
+                  splashColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)
+                  ),
+                  onTap: (){
+
+                    getImagefromCamera();
+                    Navigator.pop(context);
+                  },
+                  leading: Icon(Icons.camera_alt,color: Colors.black,),
+                  title: Text('Camera',style: TextStyle(
+                    color: Colors.black,
+                  ),),
+                ),
+
+              ],
+            ),
+          );
+        }
+    );
+  }
+  getImagefromCamera (){
+    Future<void> _getFromGallery() async {
+
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+
+      if (pickedFile != null) {
+        setState(() {
+          imageFile = File(pickedFile.path ) as File?;
+        });
+
+      }
+    }
+
+    _getFromGallery();
+  }
+  getImagefromGallery (){
+    Future<void> _getFromGallery() async {
+
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        setState(() {
+          imageFile = File(pickedFile.path ) as File?;
+        });
+
+      }
+    }
+
+    _getFromGallery();
+  }
+  TextEditingController eventName = TextEditingController();
+  TextEditingController location = TextEditingController();
+  TextEditingController dateTime = TextEditingController();
+  TextEditingController maxEntries = TextEditingController();
+  TextEditingController tags = TextEditingController();
+  TextEditingController frequency = TextEditingController();
+  TextEditingController startTime = TextEditingController();
+  TextEditingController endTime = TextEditingController();
+  TextEditingController price = TextEditingController();
+  String privacy = 'Public';
+  String eventStatus = 'Closed';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.orange[500],
+        title: Text(LocaleKeys.add_new).tr(),
+      ),
+      body: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
+                child: Container(
+                  height: 6.h,
+                  width: 25.w,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.orange[300]),
+                  child: Center(
+                    child: DropdownButton<String>(
+                      dropdownColor: Colors.orange[300],
+                      value: privacy,
+                      underline: Container(),
+                      icon: const Icon(Icons.arrow_drop_down_outlined),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.black),
+                      onChanged: (String? newValue) {
+                        assert(newValue != null);
+                        setState(() {
+                          privacy = newValue!;
+                        });
+                      },
+                      items: <String>[
+                        'Public',
+                        'Private',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: DottedBorder(
+                  radius: Radius.circular(20),
+                  color: Colors.black,
+                  strokeWidth: 2,
+                  child: InkWell(
+                    onTap: (){
+                      selectImageSource();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                      ),
+                      height: 20.h,
+                      width: MediaQuery.of(context).size.width,
+                      child: imageFile!=null?Image( fit: BoxFit.cover,image: FileImage(imageFile!,)):Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                              height: 6.h,
+                              image: AssetImage("images/upload.png")),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Text(
+                            LocaleKeys.tap_to_upload,
+                            style: TextStyle(
+                                fontSize: 3.h, fontWeight: FontWeight.bold),
+                          ).tr(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 1.5.h,
+              ),
+              Event_Textfield(
+                text: eventName,
+                icon: Icons.event,
+                hintext: LocaleKeys.event_name.tr(),
+                onpressed: () {},
+              ),
+              Event_Textfield(
+                  text: location,
+                  icon: Icons.location_on_outlined,
+                  hintext: LocaleKeys.location.tr(),
+                  onpressed: () {}),
+              Row(
+                children: [
+                  Expanded(
+                      child: Event_Textfield(
+                          text: dateTime,
+                          icon: Icons.event,
+                          hintext: LocaleKeys.date.tr(),
+                          onpressed: () {
+                            _selectEventDate(context);
+                          })),
+                  Expanded(
+                      child: Event_Textfield(
+                          text: maxEntries,
+                          icon: Icons.tag,
+                          hintext: LocaleKeys.max_entries.tr(),
+                          onpressed: () {})),
+                ],
+              ),
+              Event_Textfield(
+                  text: tags,
+                  icon: Icons.tag,
+                  hintext: LocaleKeys.tags.tr(),
+                  onpressed: () {}),
+              Event_Textfield(
+                  text: frequency,
+                  icon: Icons.cached,
+                  hintext: LocaleKeys.frequency.tr(),
+                  onpressed: () {}),
+              Row(
+                children: [
+                  Expanded(
+                      child: Event_Textfield(
+                          text: startTime,
+                          icon: Icons.alarm_on,
+                          hintext: LocaleKeys.start_time.tr(),
+                          onpressed: () {
+                            _selectStartTime(context);
+                          })),
+                  Expanded(
+                      child: Event_Textfield(
+                          text: endTime,
+                          icon: Icons.alarm_on,
+                          hintext: LocaleKeys.end_time.tr(),
+                          onpressed: () {
+                            _selectEndTime(context);
+                          })),
+                ],
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: Text(
+                  LocaleKeys.description_title.tr(),
+                  style:
+                      TextStyle(fontSize: 2.5.h, fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: TextField(
+                  maxLines: 5,
+                  keyboardType: TextInputType.multiline,
+                  decoration: InputDecoration(
+                    hintText:
+                    LocaleKeys.description.tr(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: Text(
+                  LocaleKeys.who_can_invite.tr(),
+                  style:
+                      TextStyle(fontSize: 2.5.h, fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 6.h,
+                      width: 35.w,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.orange[300]),
+                      child: Center(
+                        child: DropdownButton<String>(
+                          dropdownColor: Colors.orange[300],
+                          value: eventStatus,
+                          underline: Container(),
+                          icon: const Icon(Icons.arrow_drop_down_outlined),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.black),
+                          onChanged: (String? newValue) {
+                            assert(newValue != null);
+                            setState(() {
+                              eventStatus = newValue!;
+                            });
+                          },
+                          items: <String>[
+                            'Closed',
+                            'Open',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                        child: Event_Textfield(
+                            text: price,
+                            icon: Icons.currency_bitcoin,
+                            hintext: LocaleKeys.price.tr(),
+                            onpressed: () {})),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 2.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        onPressed: () {
+                          upload.upload(context,imageFile!, eventName.text.toString(), location.text.toString(), dateTime.text.toString(), maxEntries.text.toString(), tags.text.toString(), frequency.text.toString(), startTime.text.toString(), endTime.text.toString(), price.text.toString(), privacy, eventStatus, [widget.userModel.uid.toString()],[widget.userModel.uid.toString()]);
+                        },
+                        color: Colors.orange[300],
+                        height: 7.h,
+                        child: Text(
+                          LocaleKeys.add.tr(),
+                          style: TextStyle(
+                              fontSize: 2.3.h,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 2.h,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
