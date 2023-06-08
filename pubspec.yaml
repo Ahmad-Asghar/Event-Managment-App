@@ -50,6 +50,8 @@ dependencies:
   flutter_material_pickers:
   date_time_format:
   easy_localization: ^3.0.1
+  otp_text_field: ^1.1.3
+  flutter_firebase_ml_vision: ^0.0.1
 
 dev_dependencies:
   flutter_test:

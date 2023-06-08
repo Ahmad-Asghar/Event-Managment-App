@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../Controller/LoginMethod.dart';
 import '../Widgets/TextField.dart';
+import 'LoginWithPhoneNumber/EnterNumber.dart';
 import 'SignUpPage.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpPage()));
                   }, child: Text("Sign Up",
                   style: TextStyle(
-                    color: Colors.red,
+                    color: Colors.indigo,
                     fontWeight: FontWeight.bold,
                   ),
                   ))
@@ -66,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                     RichText(
                       text: TextSpan(
                         children: <TextSpan>[
-                          TextSpan(text: "Login " ,style: TextStyle(fontSize:4.h,fontWeight: FontWeight.bold,color: Colors.red)),
+                          TextSpan(text: "Login " ,style: TextStyle(fontSize:4.h,fontWeight: FontWeight.bold,color: Colors.indigo)),
                           TextSpan(text: " Here!" ,style: TextStyle(fontSize:4.h,fontWeight: FontWeight.bold,color: Colors.orange[600])),
                         ],
                       ),
@@ -115,12 +116,12 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   onPressed: (){
-
+Navigator.push(context, MaterialPageRoute(builder: (context)=>EnterNumberScreen()));
                   },
                   color: Colors.orange[600],
                   height: 7.h,
                   minWidth: 30.w,
-                  child: Text("Login With Facebook",
+                  child: Text("Login With Phone Number",
                     style: TextStyle(
                         fontSize: 2.3.h,
                         fontWeight: FontWeight.bold,

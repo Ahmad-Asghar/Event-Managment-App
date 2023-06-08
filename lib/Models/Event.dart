@@ -2,6 +2,7 @@ import 'package:e_commerce/Models/UserModel.dart';
 import 'package:get/get.dart';
 
 class Event extends GetxController {
+  String? eventCreatedTime;
   String? eventImage;
   String? eventName;
   String? location;
@@ -16,10 +17,12 @@ class Event extends GetxController {
   String? eventStatus;
   List<String>? sender;
   List<String>? joined;
+  List<String>? senderModel;
 
 
   Event(
       {
+        this.eventCreatedTime,
         this.eventImage,
         this.eventName,
       this.maxEntries,
@@ -33,10 +36,13 @@ class Event extends GetxController {
       this.startTime,
       this.tags,
       this.privacy,
-        this.eventStatus
+        this.eventStatus,
+        this.senderModel
       });
 
   Event.fromMap(Map<String, dynamic> map) {
+    eventCreatedTime=map['eventCreatedTime'];
+    senderModel=map['senderModel'];
     eventImage=map['eventImage'];
     privacy=map['privacy'];
     eventStatus=map['eventStatus'];
@@ -55,6 +61,8 @@ class Event extends GetxController {
   }
   Map<String, dynamic> toMap() {
     return {
+      'eventCreatedTime':eventCreatedTime,
+      'senderModel':senderModel,
       'eventImage':eventImage,
       'eventStatus':eventStatus,
       'privacy':privacy,

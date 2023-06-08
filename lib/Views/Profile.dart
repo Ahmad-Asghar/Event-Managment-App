@@ -195,8 +195,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin  
                 child: TabBarView(
                 controller: _tabController,
                 children: [
-                  Created_Events(),
-                  Joined_Events(),
+                  Created_Events(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
+                  Joined_Events(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
 
                 ],
               ),)

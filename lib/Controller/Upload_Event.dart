@@ -17,6 +17,7 @@ class Upload_Event extends GetxController{
 Snackbar snack=Snackbar();
    Future <void> upload(
        BuildContext context,
+       List<String> senderModel,
        File imageFile,
        String eventName,
        String location,
@@ -31,6 +32,7 @@ Snackbar snack=Snackbar();
        String eventStatus,
        List<String> sender,
        List<String> joined,
+       String creationTime,
 
        )async {
       showWaitingDialouge(context);
@@ -40,7 +42,8 @@ TaskSnapshot snapshot=await uploadTask;
 String eventImage= await snapshot.ref.getDownloadURL();
 
 Event model=  Event(
-
+   eventCreatedTime: creationTime,
+   senderModel:senderModel,
    eventImage: eventImage,
    eventName: eventName,
    location: location,

@@ -178,13 +178,36 @@ class _Add_EventState extends State<Add_Event> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.orange[500],
-        title: Text(LocaleKeys.add_new).tr(),
+      backgroundColor: Colors.orange[300],
+
+      appBar: PreferredSize(
+        preferredSize: MediaQuery.of(context).size*0.1,
+        child: Padding(
+          padding:  EdgeInsets.only(top: 2.h),
+
+          child: AppBar(
+            elevation: 0,
+backgroundColor: Colors.orange[300],
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+
+            title: Text(LocaleKeys.add_new,style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 3.h
+            ),).tr(),
+
+          ),
+        ),
       ),
       body: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+          borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          )
+        ),
+
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,24 +292,30 @@ class _Add_EventState extends State<Add_Event> {
                 icon: Icons.event,
                 hintext: LocaleKeys.event_name.tr(),
                 onpressed: () {},
+                onChanged: (value){},
               ),
               Event_Textfield(
                   text: location,
                   icon: Icons.location_on_outlined,
                   hintext: LocaleKeys.location.tr(),
-                  onpressed: () {}),
+                  onpressed: () {},
+                onChanged: (value){},
+              ),
               Row(
                 children: [
                   Expanded(
                       child: Event_Textfield(
+                          onChanged: (value){},
                           text: dateTime,
                           icon: Icons.event,
                           hintext: LocaleKeys.date.tr(),
                           onpressed: () {
                             _selectEventDate(context);
                           })),
+
                   Expanded(
                       child: Event_Textfield(
+                          onChanged: (value){},
                           text: maxEntries,
                           icon: Icons.tag,
                           hintext: LocaleKeys.max_entries.tr(),
@@ -294,11 +323,13 @@ class _Add_EventState extends State<Add_Event> {
                 ],
               ),
               Event_Textfield(
+                  onChanged: (value){},
                   text: tags,
                   icon: Icons.tag,
                   hintext: LocaleKeys.tags.tr(),
                   onpressed: () {}),
               Event_Textfield(
+                  onChanged: (value){},
                   text: frequency,
                   icon: Icons.cached,
                   hintext: LocaleKeys.frequency.tr(),
@@ -307,6 +338,7 @@ class _Add_EventState extends State<Add_Event> {
                 children: [
                   Expanded(
                       child: Event_Textfield(
+                          onChanged: (value){},
                           text: startTime,
                           icon: Icons.alarm_on,
                           hintext: LocaleKeys.start_time.tr(),
@@ -315,6 +347,7 @@ class _Add_EventState extends State<Add_Event> {
                           })),
                   Expanded(
                       child: Event_Textfield(
+                          onChanged: (value){},
                           text: endTime,
                           icon: Icons.alarm_on,
                           hintext: LocaleKeys.end_time.tr(),
@@ -406,6 +439,7 @@ class _Add_EventState extends State<Add_Event> {
                     ),
                     Expanded(
                         child: Event_Textfield(
+                            onChanged: (value){},
                             text: price,
                             icon: Icons.currency_bitcoin,
                             hintext: LocaleKeys.price.tr(),
@@ -426,7 +460,27 @@ class _Add_EventState extends State<Add_Event> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         onPressed: () {
-                          upload.upload(context,imageFile!, eventName.text.toString(), location.text.toString(), dateTime.text.toString(), maxEntries.text.toString(), tags.text.toString(), frequency.text.toString(), startTime.text.toString(), endTime.text.toString(), price.text.toString(), privacy, eventStatus, [widget.userModel.uid.toString()],[widget.userModel.uid.toString()]);
+                          String creationTime=DateTime.now().toString();
+                          upload.upload(
+                              context,
+                            [widget.userModel.uid.toString(),widget.userModel.profilepic.toString(),widget.userModel.fullName.toString(),widget.userModel.email.toString()],
+                            imageFile!,
+                              eventName.text.toString(),
+                              location.text.toString(),
+                              dateTime.text.toString(),
+                              maxEntries.text.toString(),
+                              tags.text.toString(),
+                              frequency.text.toString(),
+                              startTime.text.toString(),
+                              endTime.text.toString(),
+                              price.text.toString(),
+                              privacy, eventStatus,
+                              [widget.userModel.uid.toString()],
+                              [widget.userModel.uid.toString()],
+                            creationTime,
+
+
+                          );
                         },
                         color: Colors.orange[300],
                         height: 7.h,

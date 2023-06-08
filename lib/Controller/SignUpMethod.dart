@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../Models/UserModel.dart';
 import '../Views/CompleteProfile.dart';
 import '../Widgets/DialougeBox.dart';
+import '../Widgets/ErrorDialouge.dart';
 import '../Widgets/Snackbar.dart';
 
 class SignUpMethod extends GetxController {
@@ -34,11 +35,12 @@ class SignUpMethod extends GetxController {
           Colors.white, "images/checked.png");
       Navigator.push(context, MaterialPageRoute(builder: (context)=>CompleteProfile(
           userModel: newmodel, firebaseuser: credential!.user!)));
-      // Get.to(CompleteProfile(
-      //     userModel: newmodel, firebaseuser: credential!.user!));
+
     } on FirebaseAuthException catch (exception) {
-      snack.snackBar("Error", exception.code.toString(), Colors.red.shade400,
-          Colors.white, "images/close.png");
+      Navigator.pop(context);
+      ErrorDialoge(context,exception.code);
+      // snack.snackBar("Error", exception.code.toString(), Colors.red.shade400,
+      //     Colors.white, "images/close.png");
     }
   }
 }

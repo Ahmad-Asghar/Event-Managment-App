@@ -3,7 +3,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 Future<void> showWaitingDialouge(BuildContext context)async {
 
-  showDialog(context: context, builder: (BuildContext context){
+  showDialog(context: context,barrierDismissible: false, builder: (BuildContext context){
 
     return AlertDialog(
       actions: [

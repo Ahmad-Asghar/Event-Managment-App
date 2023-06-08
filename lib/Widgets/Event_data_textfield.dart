@@ -6,8 +6,10 @@ class Event_Textfield extends StatelessWidget {
   final TextEditingController text;
   final IconData icon;
   final String hintext;
-  final Function onpressed;
+  final Function() onpressed;
+  final Function(String value) onChanged;
   const Event_Textfield({Key? key,
+    required this.onChanged,
     required this.onpressed,
     required this.text,
     required this.icon,
@@ -31,7 +33,8 @@ class Event_Textfield extends StatelessWidget {
 
           child: Center(
             child: TextFormField(
-onTap: onpressed as Function(),
+          onChanged: onChanged,
+onTap: onpressed,
               controller: text,
               decoration: InputDecoration(
                 focusColor: Colors.white,

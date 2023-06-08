@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import '../Controller/SignUpMethod.dart';
 import '../Models/UserModel.dart';
 import '../Views/HomePage.dart';
+import '../Widgets/ErrorDialouge.dart';
 import '../Widgets/Snackbar.dart';
 import '../Widgets/TextField.dart';
 class LoginMethod extends GetxController {
@@ -17,10 +18,10 @@ class LoginMethod extends GetxController {
 
   LoginMethod1( BuildContext context, String emailcontroller,String passwordcontroller) async {
 print("HI");
-showWaitingDialouge(context);
+
     UserCredential? credentials;
     try{
-
+      showWaitingDialouge(context);
       credentials = await FirebaseAuth.instance.
       signInWithEmailAndPassword(email: emailcontroller, password: passwordcontroller);
       String uid=credentials.user!.uid;
@@ -35,7 +36,9 @@ showWaitingDialouge(context);
 
     }
     on FirebaseAuthException catch(exception){
-      snack.snackBar("Error", exception.code.toString(),Colors.red.shade400,Colors.white,"images/close.png");
+      Navigator.pop(context);
+      ErrorDialoge(context,exception.code);
+      //snack.snackBar("Error", exception.code.toString(),Colors.red.shade400,Colors.white,"images/close.png");
     }
 
 

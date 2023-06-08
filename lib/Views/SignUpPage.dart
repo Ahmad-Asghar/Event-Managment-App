@@ -43,7 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 }, child: Text("Login",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.red
+                      color: Colors.indigo
                   ),))
               ],
             )
@@ -61,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   RichText(
                     text: TextSpan(
                       children: <TextSpan>[
-                        TextSpan(text: "Sign Up " ,style: TextStyle(fontSize:4.h,fontWeight: FontWeight.bold,color: Colors.red)),
+                        TextSpan(text: "Sign Up " ,style: TextStyle(fontSize:4.h,fontWeight: FontWeight.bold,color: Colors.indigo)),
                         TextSpan(text: " Here!" ,style: TextStyle(fontSize:4.h,fontWeight: FontWeight.bold,color: Colors.orange[600])),
                       ],
                     ),

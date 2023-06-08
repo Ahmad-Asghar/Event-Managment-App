@@ -1,13 +1,9 @@
-import 'dart:collection';
-import 'package:e_commerce/Views/Messeges.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import 'Localization/Messeges.dart';
 import 'Localization/code/codegen_loader.g.dart';
 import 'Views/splash_screen.dart';
 
@@ -35,7 +31,7 @@ class MyApp extends StatelessWidget {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
 
-        return MaterialApp(
+        return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
@@ -43,7 +39,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
 
             primarySwatch: Colors.orange,
-            textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme)
+            textTheme: GoogleFonts.comfortaaTextTheme(Theme.of(context).textTheme),
           ),
           home: SplashScreen(),
           //comment

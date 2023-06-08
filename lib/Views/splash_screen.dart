@@ -1,15 +1,8 @@
 import 'dart:async';
-
 import 'package:e_commerce/Controller/FirebaseHelper.dart';
-import 'package:e_commerce/Models/UserModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
-
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import '../Models/Usermodel.dart';
-import 'HomePage.dart';
 import 'LoginPage.dart';
 import 'nav_bar.dart';
 

@@ -10,6 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../Localization/code/local_keys.g.dart';
 import '../Models/UserModel.dart';
@@ -33,9 +34,9 @@ class _HomeState extends State<Home> {
     super.initState();
     screen = [
   HomePage(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
-  Feeds(),
+  Feeds(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
       Add_Event(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
-  Messeges(),
+  Messeges(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
   Profile(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
   ];
   }
@@ -51,22 +52,14 @@ class _HomeState extends State<Home> {
         child: Scaffold(
           body: screen[index],
           bottomNavigationBar: Container(
-            height: 100,
+        color: Colors.white,
+            height: 13.h,
             child: Stack(
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Container(
-                      height: 60,
-                      decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
-                          spreadRadius: 15,
-                          blurRadius: 20,
-                        )
-                      ]),
-                    ),
+
                   ],
                 ),
                 Padding(
@@ -87,8 +80,8 @@ class _HomeState extends State<Home> {
                                 child: CircleAvatar(
                                   radius: 30,
                                   backgroundColor: index == 0
-                                      ? Colors.orange[500]
-                                      : Colors.white,
+                                      ? Colors.orange[300]
+                                      : Colors.grey[100],
                                   child: ImageIcon(
                                     const AssetImage("images/home.png"),
                                     color: index == 0
@@ -122,8 +115,8 @@ class _HomeState extends State<Home> {
                                 child: CircleAvatar(
                                   radius: 30,
                                   backgroundColor: index == 1
-                                      ? Colors.orange[500]
-                                      : Colors.white,
+                                      ? Colors.orange[300]
+                                      : Colors.grey[100],
                                   child: ImageIcon(
                                     const AssetImage("images/category.png"),
                                     color: index == 1
@@ -157,8 +150,8 @@ class _HomeState extends State<Home> {
                                 child: CircleAvatar(
                                   radius: 30,
                                   backgroundColor: index == 2
-                                      ? Colors.orange[500]
-                                      : Colors.white,
+                                      ? Colors.orange[300]
+                                      : Colors.grey[100],
                                   child: ImageIcon(
                                     size: 90,
                                       AssetImage("images/plus.png",
@@ -195,8 +188,8 @@ class _HomeState extends State<Home> {
                                 child: CircleAvatar(
                                   radius: 30,
                                   backgroundColor: index == 3
-                                      ?Colors.orange[500]
-                                      : Colors.white,
+                                      ? Colors.orange[300]
+                                      : Colors.grey[100],
                                   child: ImageIcon(
                                     const AssetImage("images/contact.png"),
                                     color: index == 3
@@ -230,8 +223,8 @@ class _HomeState extends State<Home> {
                                 child: CircleAvatar(
                                   radius: 30,
                                   backgroundColor: index == 4
-                                      ? Colors.orange[500]
-                                      : Colors.white,
+                                      ? Colors.orange[300]
+                                      : Colors.grey[100],
                                   child: ImageIcon(
                                     const AssetImage("images/profile.png"),
                                     color: index == 4
