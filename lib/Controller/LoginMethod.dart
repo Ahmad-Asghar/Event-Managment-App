@@ -29,16 +29,13 @@ print("HI");
       UserModel userModel=UserModel.fromMap(userData.data() as Map<String ,dynamic>);
 
       snack.snackBar("Congratulations", 'Successfully Loged In',Colors.blue,Colors.white,"images/checked.png");
-     // Get.to(Home());
       Navigator.pop(context);
       Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: userModel, firebaseuser: credentials!.user!)));
-      //Get.to(Home(userModel: userModel, firebaseuser: credentials.user!));
 
     }
     on FirebaseAuthException catch(exception){
       Navigator.pop(context);
       ErrorDialoge(context,exception.code);
-      //snack.snackBar("Error", exception.code.toString(),Colors.red.shade400,Colors.white,"images/close.png");
     }
 
 

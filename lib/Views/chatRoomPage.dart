@@ -157,21 +157,29 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                       children: [
                                         Container(
                                             width: 70.w,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: currentmsg.sender ==
-                                                        widget.userModel.uid
-                                                    ? Colors.grey[500]
-                                                    : Colors.orange[200],
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              child: Padding(
-                                                padding: EdgeInsets.all(1.5.h),
-                                                child: Text(
-                                                  currentmsg.text.toString(),
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                            child: Align(
+                                              alignment: (currentmsg.sender ==
+                                                      widget.userModel.uid)
+                                                  ? Alignment.centerRight
+                                                  : Alignment.centerLeft,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: currentmsg.sender ==
+                                                          widget.userModel.uid
+                                                      ? Colors.grey[500]
+                                                      : Colors.orange[200],
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      EdgeInsets.all(1.5.h),
+                                                  child: Text(
+                                                    currentmsg.text.toString(),
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
