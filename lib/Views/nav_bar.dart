@@ -48,210 +48,204 @@ class _HomeState extends State<Home> {
       child: SafeArea(
         child: Scaffold(
           body: screen[index],
-          bottomNavigationBar: Container(
-        color: Colors.white,
-            height: 13.h,
-            child: Stack(
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+          bottomNavigationBar: BottomAppBar(
+            elevation: 0,
+            child: Container(
+              color: Colors.white,
+              height: 10.h,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      Column(
                         children: [
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  index = 0;
-                                  setState(() {});
-                                },
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: index == 0
-                                      ? Colors.orange[300]
-                                      : Colors.grey[100],
-                                  child: ImageIcon(
-                                    const AssetImage("images/home.png"),
-                                    color: index == 0
-                                        ? Colors.white
-                                        : Colors.orange[500]
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                LocaleKeys.home,
-                                style: TextStyle(
+                          GestureDetector(
+                            onTap: () {
+                              index = 0;
+                              setState(() {});
+                            },
+                            child: CircleAvatar(
+                              radius: 20,
+                              backgroundColor: index == 0
+                                  ? Colors.orange[300]
+                                  : Colors.grey[100],
+                              child: ImageIcon(
+                                  size: 15,
+                                  const AssetImage("images/home.png",),
                                   color: index == 0
-                                      ? Colors.orange[500]
-                                      : const Color(0xff686868),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ).tr(),
-                            ],
+                                      ? Colors.white
+                                      : Colors.orange[500]
+                              ),
+                            ),
                           ),
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  index = 1;
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            LocaleKeys.home,
+                            style: TextStyle(
+                              color: index == 0
+                                  ? Colors.orange[500]
+                                  : const Color(0xff686868),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ).tr(),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              index = 1;
 
-                                  setState(() {});
-                                },
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: index == 1
-                                      ? Colors.orange[300]
-                                      : Colors.grey[100],
-                                  child: ImageIcon(
-                                    const AssetImage("images/category.png"),
-                                    color: index == 1
-                                        ? Colors.white
-                                        : Colors.orange[500]
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                LocaleKeys.feeds,
-                                style: TextStyle(
+                              setState(() {});
+                            },
+                            child: CircleAvatar(
+                              radius: 20,
+                              backgroundColor: index == 1
+                                  ? Colors.orange[300]
+                                  : Colors.grey[100],
+                              child: ImageIcon(
+                                  size: 15,
+                                  const AssetImage("images/category.png"),
                                   color: index == 1
-                                      ? Colors.orange[500]
-                                      : const Color(0xff686868),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ).tr(),
-                            ],
+                                      ? Colors.white
+                                      : Colors.orange[500]
+                              ),
+                            ),
                           ),
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  index = 2;
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            LocaleKeys.feeds,
+                            style: TextStyle(
+                              color: index == 1
+                                  ? Colors.orange[500]
+                                  : const Color(0xff686868),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ).tr(),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              index = 2;
 
-                                  setState(() {});
-                                },
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: index == 2
-                                      ? Colors.orange[300]
-                                      : Colors.grey[100],
-                                  child: ImageIcon(
-                                    size: 90,
-                                      AssetImage("images/plus.png",
+                              setState(() {});
+                            },
+                            child: CircleAvatar(
+                              radius: 20,
+                              backgroundColor: index == 2
+                                  ? Colors.orange[300]
+                                  : Colors.grey[100],
+                              child: ImageIcon(
+                                  size: 70,
+                                  AssetImage("images/plus.png",
 
-                                    ),
-                                    color: index == 2
-                                        ? Colors.white
-                                        : Colors.orange[500]
                                   ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                LocaleKeys.add_new,
-                                style: TextStyle(
                                   color: index == 2
-                                      ? Colors.orange[500]
-                                      : const Color(0xff686868),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ).tr(),
-                            ],
+                                      ? Colors.white
+                                      : Colors.orange[500]
+                              ),
+                            ),
                           ),
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  index = 3;
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            LocaleKeys.add_new,
+                            style: TextStyle(
+                              color: index == 2
+                                  ? Colors.orange[500]
+                                  : const Color(0xff686868),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ).tr(),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              index = 3;
 
-                                  setState(() {});
-                                },
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: index == 3
-                                      ? Colors.orange[300]
-                                      : Colors.grey[100],
-                                  child: ImageIcon(
-                                    const AssetImage("images/contact.png"),
-                                    color: index == 3
-                                        ? Colors.white
-                                        : Colors.orange[500]
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                LocaleKeys.message,
-                                style: TextStyle(
+                              setState(() {});
+                            },
+                            child: CircleAvatar(
+                              radius: 20,
+                              backgroundColor: index == 3
+                                  ? Colors.orange[300]
+                                  : Colors.grey[100],
+                              child: ImageIcon(
+                                  size: 15,
+                                  const AssetImage("images/contact.png"),
                                   color: index == 3
-                                      ? Colors.orange[500]
-                                      : const Color(0xff686868),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ).tr(),
-                            ],
+                                      ? Colors.white
+                                      : Colors.orange[500]
+                              ),
+                            ),
                           ),
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  index = 4;
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            LocaleKeys.message,
+                            style: TextStyle(
+                              color: index == 3
+                                  ? Colors.orange[500]
+                                  : const Color(0xff686868),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ).tr(),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              index = 4;
 
-                                  setState(() {});
-                                },
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: index == 4
-                                      ? Colors.orange[300]
-                                      : Colors.grey[100],
-                                  child: ImageIcon(
-                                    const AssetImage("images/profile.png"),
-                                    color: index == 4
-                                        ? Colors.white
-                                        : Colors.orange[500]
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                  LocaleKeys.profile,
-                                style: TextStyle(
+                              setState(() {});
+                            },
+                            child: CircleAvatar(
+                              radius: 20,
+                              backgroundColor: index == 4
+                                  ? Colors.orange[300]
+                                  : Colors.grey[100],
+                              child: ImageIcon(
+                                  size: 15,
+                                  const AssetImage("images/profile.png"),
                                   color: index == 4
-                                      ? Colors.orange[500]
-                                      : const Color(0xff686868),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ).tr(),
-                            ],
+                                      ? Colors.white
+                                      : Colors.orange[500]
+                              ),
+                            ),
                           ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            LocaleKeys.profile,
+                            style: TextStyle(
+                              color: index == 4
+                                  ? Colors.orange[500]
+                                  : const Color(0xff686868),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ).tr(),
                         ],
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          )
         ),
       ),
     );
