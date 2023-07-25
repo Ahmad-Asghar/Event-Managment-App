@@ -10,7 +10,8 @@ import '../Localization/code/local_keys.g.dart';
 import '../Models/UserModel.dart';
 import '../Models/chatRoomModel.dart';
 import '../Widgets/Event_data_textfield.dart';
-import 'chatRoomPage.dart';
+import 'Messenger/chatRoomPage.dart';
+import 'checkProfile.dart';
 
 class Feeds extends StatefulWidget {
   final UserModel userModel;
@@ -24,40 +25,48 @@ class Feeds extends StatefulWidget {
 
 class _FeedsState extends State<Feeds> {
   TextEditingController searchedController = TextEditingController();
-  Future<ChatRoomModel?> getChatRoomModel( UserModel targetUser) async {
-    ChatRoomModel? chatroom;
-    QuerySnapshot snapshot= await FirebaseFirestore.instance.collection("ChatRooms")
-        .where("participants.${widget.userModel.uid}",isEqualTo:true)
-        .where("participants.${targetUser.uid}",isEqualTo:true).get();
 
-    if(snapshot.docs.isNotEmpty){
+  late List<DocumentSnapshot> filteredData;
+  late List<DocumentSnapshot> secondFilteration = [];
+
+  Future<ChatRoomModel?> getChatRoomModel(UserModel targetUser) async {
+    ChatRoomModel? chatroom;
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("ChatRooms")
+        .where("participants.${widget.userModel.uid}", isEqualTo: true)
+        .where("participants.${targetUser.uid}", isEqualTo: true)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
       print("Already Have a Chat Room");
 
-      var docData=snapshot.docs[0].data();
-      ChatRoomModel existingChatRoom=ChatRoomModel.fromMap(docData as Map<String,dynamic>);
-      chatroom=existingChatRoom;
-    }
-    else{
+      var docData = snapshot.docs[0].data();
+      ChatRoomModel existingChatRoom =
+          ChatRoomModel.fromMap(docData as Map<String, dynamic>);
+      chatroom = existingChatRoom;
+    } else {
       print("Create a Chat Room");
-      String id=DateTime.now().microsecondsSinceEpoch.toString();
-      ChatRoomModel newChatRoom=ChatRoomModel(
-
-        chatRoomId:id,
+      String id = DateTime.now().microsecondsSinceEpoch.toString();
+      ChatRoomModel newChatRoom = ChatRoomModel(
+        chatRoomId: id,
         lastmessege: "",
         participants: {
-
-          widget.userModel.uid.toString():true,
-          targetUser.uid.toString():true,
+          widget.userModel.uid.toString(): true,
+          targetUser.uid.toString(): true,
         },
-        users: [widget.userModel.uid.toString(),targetUser.uid.toString()],
+        users: [widget.userModel.uid.toString(), targetUser.uid.toString()],
         datetime: DateTime.now(),
       );
-      await FirebaseFirestore.instance.collection("ChatRooms").doc(newChatRoom.chatRoomId).set(newChatRoom.toMap());
-      chatroom=newChatRoom;
+      await FirebaseFirestore.instance
+          .collection("ChatRooms")
+          .doc(newChatRoom.chatRoomId)
+          .set(newChatRoom.toMap());
+      chatroom = newChatRoom;
       print("Chat Room Created!");
     }
     return chatroom;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,8 +106,17 @@ class _FeedsState extends State<Feeds> {
               icon: Icons.search,
               hintext: "Search User",
               onpressed: () {},
+              readOnly: false,
               onChanged: (value) {
-                setState(() {});
+                setState(() {
+                  secondFilteration = filteredData
+                      .where((doc) => doc['fullName']
+                          .toString()
+                          .toLowerCase()
+                          .contains(
+                              searchedController.text.toLowerCase().trim()))
+                      .toList();
+                });
               },
             ),
             StreamBuilder<QuerySnapshot>(
@@ -116,19 +134,19 @@ class _FeedsState extends State<Feeds> {
                     child: CircularProgressIndicator(),
                   );
                 }
-
+                filteredData = snapshot.data!.docs
+                    .where(
+                        (doc) => widget.userModel.uid != doc['uid'].toString())
+                    .toList();
                 if (searchedController.text.isEmpty) {
-                  // If searchedController is empty, execute this code
-                  // Filter the data to exclude the current user
-                  final filteredData = snapshot.data!.docs.where((doc) =>
-                  widget.userModel.uid != doc['uid'].toString()).toList();
-
-                 return Expanded(
+                  print(filteredData.length.toString());
+                  return Expanded(
                     child: ListView.builder(
                       itemCount: filteredData.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 2.4.w, vertical: 0.7.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 2.4.w, vertical: 0.7.h),
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.orange[100],
@@ -136,26 +154,35 @@ class _FeedsState extends State<Feeds> {
                             ),
                             child: ListTile(
                               onTap: () async {
-                                Map<String, dynamic> userMap =
-                                filteredData[index].data() as Map<String, dynamic>;
-                                print(userMap.length.toString());
-
-                                UserModel searchedUser = UserModel.fromMap(userMap);
-                                print(searchedUser.fullName.toString());
-                                ChatRoomModel? chatroomModel =
-                                await getChatRoomModel(searchedUser);
-
-                                if (chatroomModel != null) {
-                                  Navigator.pop(context);
-                                  Get.to(
-                                    ChatRoomPage(
-                                      userModel: widget.userModel,
-                                      firebaseuser: widget.firebaseuser,
-                                      targetuser: searchedUser,
-                                      chatroom: chatroomModel,
-                                    ),
-                                  );
-                                }
+                                // Map<String, dynamic> userMap =
+                                //     filteredData[index].data()
+                                //         as Map<String, dynamic>;
+                                // UserModel searchedUser =
+                                //     UserModel.fromMap(userMap);
+                                // ChatRoomModel? chatroomModel =
+                                //     await getChatRoomModel(searchedUser);
+                                // if (chatroomModel != null) {
+                                //   Navigator.pop(context);
+                                //   Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //         builder: (context) => ChatRoomPage(
+                                //           userModel: widget.userModel,
+                                //           firebaseuser: widget.firebaseuser,
+                                //           targetuser: searchedUser,
+                                //           chatroom: chatroomModel,
+                                //         ),
+                                //       ));
+                                // }
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CheckProfile(
+                                          userModel: widget.userModel,
+                                              firebaseuser: widget.firebaseuser,
+                                              userId: filteredData[index]['uid']
+                                                  .toString(),
+                                            )));
                               },
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(
@@ -179,24 +206,11 @@ class _FeedsState extends State<Feeds> {
                       },
                     ),
                   );
-
                 } else {
-                  // If searchedController is not empty, execute this code
                   return Expanded(
                     child: ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        List<String> names = [];
-                        String name = snapshot.data!.docs[index]['fullName']
-                            .toString()
-                            .toLowerCase();
-                        print(name + " It is ${index + 1} User ");
-                        String searchTerm =
-                            searchedController.text.toLowerCase().trim();
-                        print(searchTerm + " It is a searched User");
-                        if (name.contains(searchTerm)) {
-                          print(name.contains(searchTerm).toString() +
-                              "  Its is a contained term...");
+                        itemCount: secondFilteration.length,
+                        itemBuilder: (BuildContext context, int index) {
                           return Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 2.4.w, vertical: 0.7.h),
@@ -206,20 +220,51 @@ class _FeedsState extends State<Feeds> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: ListTile(
-
+                                onTap: () async {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CheckProfile(
+                                            userModel: widget.userModel,
+                                            firebaseuser: widget.firebaseuser,
+                                                userId: filteredData[index]
+                                                        ['uid']
+                                                    .toString(),
+                                              )));
+                                  // Map<String, dynamic> userMap =
+                                  //     secondFilteration[index].data()
+                                  //         as Map<String, dynamic>;
+                                  // UserModel searchedUser =
+                                  //     UserModel.fromMap(userMap);
+                                  // ChatRoomModel? chatroomModel =
+                                  //     await getChatRoomModel(searchedUser);
+                                  // if (chatroomModel != null) {
+                                  //   Navigator.pop(context);
+                                  //   Navigator.push(
+                                  //       context,
+                                  //       MaterialPageRoute(
+                                  //         builder: (context) => ChatRoomPage(
+                                  //           userModel: widget.userModel,
+                                  //           firebaseuser: widget.firebaseuser,
+                                  //           targetuser: searchedUser,
+                                  //           chatroom: chatroomModel,
+                                  //         ),
+                                  //       ));
+                                  // }
+                                },
                                 leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(snapshot
-                                      .data!.docs[index]['profilepic']
-                                      .toString()),
+                                  backgroundImage: NetworkImage(
+                                    secondFilteration[index]['profilepic']
+                                        .toString(),
+                                  ),
                                 ),
                                 title: Text(
-                                  snapshot.data!.docs[index]['fullName']
+                                  secondFilteration[index]['fullName']
                                       .toString(),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Text(
-                                  snapshot.data!.docs[index]['email']
-                                      .toString(),
+                                  secondFilteration[index]['email'].toString(),
                                 ),
                                 trailing: IconButton(
                                   onPressed: () {},
@@ -228,10 +273,8 @@ class _FeedsState extends State<Feeds> {
                               ),
                             ),
                           );
-                        }
-                      },
-                    ),
-                  ); // Replace with your desired widget
+                        }),
+                  );
                 }
               },
             ),

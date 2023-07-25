@@ -1,101 +1,124 @@
-// import 'dart:io';
+// import 'package:e_commerce/videoplayer.dart';
 // import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
+// import 'package:file_picker/file_picker.dart';
+// import 'package:responsive_sizer/responsive_sizer.dart';
+// import 'package:video_player/video_player.dart';
+// import 'dart:io';
+// import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 //
-// class TextRecognitionPage extends StatefulWidget {
+// class VideoPickerScreen extends StatefulWidget {
+//   const VideoPickerScreen({Key? key}) : super(key: key);
+//
 //   @override
-//   _TextRecognitionPageState createState() => _TextRecognitionPageState();
+//   _VideoPickerScreenState createState() => _VideoPickerScreenState();
 // }
 //
-// class _TextRecognitionPageState extends State<TextRecognitionPage> {
-//   late File _image;
-//   List<String> searchList = ['word1', 'word2', 'word3'];
-//   late String resultText;
-//   bool showPopupImage = false;
+// class _VideoPickerScreenState extends State<VideoPickerScreen> {
+//   VideoPlayerController? _videoPlayerController;
+//   bool _isVideoPlaying = false;
+//   File? _videoFile;
 //
-//   Future getImageFromCamera() async {
-//     var image = await ImagePicker().getImage(source: ImageSource.camera);
-//     setState(() {
-//       _image = File(image?.path);
-//       resultText = null;
-//       showPopupImage = false;
-//     });
-//     recognizeText();
-//   }
+//   Future<void> _pickVideo() async {
+//     FilePickerResult? result = await FilePicker.platform.pickFiles(
+//       type: FileType.video,
+//       allowMultiple: false,
+//     );
 //
-//   Future recognizeText() async {
-//     final FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(_image);
-//     final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
-//     final VisionText visionText = await textRecognizer.processImage(visionImage);
-//
-//     String recognizedText = '';
-//     for (TextBlock block in visionText.blocks) {
-//       for (TextLine line in block.lines) {
-//         for (TextElement element in line.elements) {
-//           recognizedText += element.text + ' ';
-//         }
-//         recognizedText += '\n';
-//       }
+//     if (result != null) {
+//       _videoFile = File(result.files.single.path!);
+//       _videoPlayerController = VideoPlayerController.file(_videoFile!);
+//       await _videoPlayerController!.initialize();
+//       setState(() {
+//         _isVideoPlaying = false;
+//       });
 //     }
-//     setState(() {
-//       resultText = recognizedText;
-//       if (searchList.any((word) => recognizedText.contains(word))) {
-//         showPopupImage = true;
-//       } else {
-//         showPopupImage = false;
-//       }
-//     });
-//     textRecognizer.close();
 //   }
 //
-//   void resetScan() {
-//     setState(() {
-//       _image = null;
-//       resultText = null;
-//       showPopupImage = false;
-//     });
+//   Future<void> _uploadVideo() async {
+//     if (_videoFile != null) {
+//       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+//       firebase_storage.Reference storageRef =
+//       firebase_storage.FirebaseStorage.instance.ref("Videos").child(fileName);
+//       firebase_storage.UploadTask uploadTask = storageRef.putFile(_videoFile!);
+//       await uploadTask.whenComplete(() => null);
+//       String videoUrl = await storageRef.getDownloadURL();
+//       // Do something with the video URL (e.g., save to database)
+//       print('Video uploaded: $videoUrl');
+//     }
 //   }
 //
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: Text('Text Recognition'),
+//         title: const Text('Video Picker'),
 //       ),
-//       body: Container(
-//         alignment: Alignment.center,
-//         child: _image == null
-//             ? Text('No image selected.')
-//             : Column(
-//           children: [
-//             Expanded(
-//               child: Image.file(_image),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             ElevatedButton(
+//               onPressed: _pickVideo,
+//               child: const Text('Pick Video'),
 //             ),
-//             SizedBox(height: 20),
-//             resultText == null
-//                 ? CircularProgressIndicator()
-//                 : Expanded(
-//               child: SingleChildScrollView(
-//                 child: Text(
-//                   resultText,
-//                   textAlign: TextAlign.center,
+//             SizedBox(height: 16.0),
+//             if (_videoPlayerController != null)
+//               Padding(
+//                 padding: const EdgeInsets.all(20.0),
+//                 child: GestureDetector(
+//                   onTap: () {
+//                     Navigator.push(
+//                       context,
+//                       MaterialPageRoute(
+//                         builder: (context) => VideoPlayerPage(
+//                           videoPlayerController: _videoPlayerController!,
+//                         ),
+//                       ),
+//                     );
+//                   },
+//                   child: Container(
+//                     height: 30.h,
+//                     width: double.infinity,
+//                     child: AspectRatio(
+//                       aspectRatio: _videoPlayerController!.value.aspectRatio,
+//                       child: Stack(
+//                         alignment: Alignment.center,
+//                         children: [
+//                           VideoPlayer(_videoPlayerController!),
+//                           IconButton(
+//                             icon: Icon(
+//                               _isVideoPlaying
+//                                   ? Icons.pause
+//                                   : Icons.play_arrow,
+//                               size: 64.0,
+//                               color: Colors.white,
+//                             ),
+//                             onPressed: () {
+//                               Navigator.push(
+//                                 context,
+//                                 MaterialPageRoute(
+//                                   builder: (context) => VideoPlayerPage(
+//                                     videoPlayerController:
+//                                     _videoPlayerController!,
+//                                   ),
+//                                 ),
+//                               );
+//                             },
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
 //                 ),
 //               ),
-//             ),
-//             SizedBox(height: 20),
+//             SizedBox(height: 16.0),
 //             ElevatedButton(
-//               onPressed: resetScan,
-//               child: Text('New Scan'),
+//               onPressed: _uploadVideo,
+//               child: Text('Upload Video'),
 //             ),
 //           ],
 //         ),
 //       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: getImageFromCamera,
-//         tooltip: 'Take a photo',
-//         child: Icon(Icons.camera_alt),
-//       ),
 //     );
 //   }
 // }
-//

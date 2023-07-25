@@ -9,12 +9,12 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-import '../Models/Event.dart';
-import '../Models/UserModel.dart';
-import '../Views/HomePage.dart';
-import '../Views/nav_bar.dart';
-import '../Widgets/DialougeBox.dart';
-import '../Widgets/Snackbar.dart';
+import '../../Models/Event.dart';
+import '../../Models/UserModel.dart';
+import '../../Views/Events/HomePage.dart';
+import '../../Views/nav_bar.dart';
+import '../../Widgets/DialougeBox.dart';
+import '../../Widgets/Snackbar.dart';
 
 class CompleteProfileData extends GetxController {
 
@@ -42,7 +42,7 @@ class CompleteProfileData extends GetxController {
                   Colors.white, "images/close.png")
             });
 Navigator.pop(context);
-Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: model, firebaseuser: user)));
+Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: model, firebaseuser: user, screenNO: 0,)));
     // snack.snackBar("Confirmation", "Successfully Completed Profile",
     //     Colors.blue, Colors.white, "images/checked.png");
     // // Get.to(Home());

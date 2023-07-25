@@ -3,7 +3,7 @@ import 'package:e_commerce/Controller/FirebaseHelper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'LoginPage.dart';
+import 'LoginwithGmail/LoginPage.dart';
 import 'nav_bar.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
       var fetchedUserModel = await   FirebaseHelper.getUserMOdelById(currentuser.uid) ;
       if(fetchedUserModel!=null){
         Timer(Duration(seconds: 4),(){
-Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: fetchedUserModel, firebaseuser: currentuser)));
+Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: fetchedUserModel, firebaseuser: currentuser, screenNO: 0,)));
         // Get.to(Home(userModel: fetchedUserModel, firebaseuser: currentuser));
         });
       }

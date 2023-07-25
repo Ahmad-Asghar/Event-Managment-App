@@ -1,7 +1,7 @@
-import 'package:e_commerce/Models/UserModel.dart';
-import 'package:get/get.dart';
 
-class Event extends GetxController {
+class Event {
+
+  String? eventId;
   String? eventCreatedTime;
   String? eventImage;
   String? eventName;
@@ -15,57 +15,65 @@ class Event extends GetxController {
   String? price;
   String? privacy;
   String? eventStatus;
+  String? description;
   List<String>? sender;
   List<String>? joined;
   List<String>? senderModel;
+  List<String>? eventVideos;
 
-
-  Event(
-      {
-        this.eventCreatedTime,
-        this.eventImage,
-        this.eventName,
-      this.maxEntries,
-      this.dateTime,
-      this.location,
-      this.endTime,
-      this.frequency,
-      this.joined,
-      this.price,
-      this.sender,
-      this.startTime,
-      this.tags,
-      this.privacy,
-        this.eventStatus,
-        this.senderModel
-      });
-
+  Event({
+    this.eventVideos,
+    this.description,
+    this.eventId,
+    this.eventCreatedTime,
+    this.eventImage,
+    this.eventName,
+    this.maxEntries,
+    this.dateTime,
+    this.location,
+    this.endTime,
+    this.frequency,
+    this.joined,
+    this.price,
+    this.sender,
+    this.startTime,
+    this.tags,
+    this.privacy,
+    this.eventStatus,
+    this.senderModel,
+  });
   Event.fromMap(Map<String, dynamic> map) {
-    eventCreatedTime=map['eventCreatedTime'];
-    senderModel=map['senderModel'];
-    eventImage=map['eventImage'];
-    privacy=map['privacy'];
-    eventStatus=map['eventStatus'];
+    description = map['description'];
+    eventId = map['eventId'];
+    eventCreatedTime = map['eventCreatedTime'];
+    senderModel = (map['senderModel'] as List<dynamic>).cast<String>();
+    eventImage = map['eventImage'];
+    privacy = map['privacy'];
+    eventStatus = map['eventStatus'];
     eventName = map['eventName'];
     maxEntries = map['maxEntries'];
     dateTime = map['dateTime'];
     location = map['location'];
     endTime = map['endTime'];
     frequency = map['frequency'];
-    joined = map['joined'];
+    joined = (map['joined'] as List<dynamic>).cast<String>();
+    eventVideos = (map['eventVideos'] as List<dynamic>).cast<String>();
     price = map['price'];
-    sender = map['sender'];
+    sender = (map['sender'] as List<dynamic>).cast<String>();
     startTime = map['startTime'];
     tags = map['tags'];
-
   }
   Map<String, dynamic> toMap() {
     return {
-      'eventCreatedTime':eventCreatedTime,
-      'senderModel':senderModel,
-      'eventImage':eventImage,
-      'eventStatus':eventStatus,
-      'privacy':privacy,
+
+      'description': description,
+      'eventId': eventId,
+      'eventCreatedTime': eventCreatedTime,
+      'senderModel': senderModel,
+      'eventVideos':eventVideos,
+      'eventImage': eventImage,
+      'eventStatus': eventStatus,
+      'privacy': privacy,
       'eventName': eventName,
       'maxEntries': maxEntries,
       'dateTime': dateTime,
@@ -80,3 +88,4 @@ class Event extends GetxController {
     };
   }
 }
+

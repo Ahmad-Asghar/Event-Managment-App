@@ -8,10 +8,10 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../Controller/CompleteProfile.dart';
-import '../Models/UserModel.dart';
-import '../Widgets/Snackbar.dart';
-import '../Widgets/TextField.dart';
+import '../../Controller/Login/CompleteProfile.dart';
+import '../../Models/UserModel.dart';
+import '../../Widgets/Snackbar.dart';
+import '../../Widgets/TextField.dart';
 
 class CompleteProfile extends StatefulWidget {
   final UserModel userModel;

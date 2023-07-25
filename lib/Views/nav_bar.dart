@@ -1,41 +1,38 @@
 import 'dart:io';
-
-import 'package:e_commerce/Views/HomePage.dart';
-import 'package:e_commerce/Views/LoginPage.dart';
-import 'package:e_commerce/Views/Messeges.dart';
+import 'package:e_commerce/Views/Events/HomePage.dart';
 import 'package:e_commerce/Views/Profile.dart';
-import 'package:e_commerce/Views/add_event.dart';
-import 'package:e_commerce/Views/splash_screen.dart';
+import 'package:e_commerce/Views/Events/add_event.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../Localization/code/local_keys.g.dart';
 import '../Models/UserModel.dart';
 import 'Feeds.dart';
+import 'Messenger/Messeges.dart';
 
 class Home extends StatefulWidget {
   final UserModel userModel;
   final User firebaseuser;
-  const Home({super.key, required this.userModel, required this.firebaseuser, });
+  final int screenNO;
+  const Home({super.key, required this.userModel, required this.firebaseuser, required this.screenNO, });
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  int index = 0;
+  late int index;
  late List<StatefulWidget> screen;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    index=widget.screenNO;
     screen = [
   HomePage(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
   Feeds(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
-      Add_Event(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
+  Add_Event(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
   Messeges(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
   Profile(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
   ];

@@ -6,10 +6,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../Models/Event.dart';
-import '../Widgets/DialougeBox.dart';
-import '../Widgets/Snackbar.dart';
-import '../Widgets/successDialouge.dart';
+import '../../Models/Event.dart';
+import '../../Widgets/DialougeBox.dart';
+import '../../Widgets/Snackbar.dart';
+import '../../Widgets/successDialouge.dart';
 
 class Upload_Event extends GetxController{
 
@@ -19,6 +19,7 @@ Snackbar snack=Snackbar();
        BuildContext context,
        List<String> senderModel,
        File imageFile,
+       String description,
        String eventName,
        String location,
        String dateTime,
@@ -42,6 +43,8 @@ TaskSnapshot snapshot=await uploadTask;
 String eventImage= await snapshot.ref.getDownloadURL();
 
 Event model=  Event(
+   eventId: id,
+   description: description,
    eventCreatedTime: creationTime,
    senderModel:senderModel,
    eventImage: eventImage,
@@ -58,6 +61,7 @@ Event model=  Event(
    eventStatus: eventStatus,
    sender: sender,
    joined: joined,
+   eventVideos: []
 
 );
 
@@ -67,7 +71,7 @@ FirebaseFirestore.instance
     .set(model.toMap());
 print("Added");
 Navigator.pop(context);
-      showSuccessDialoge(context);
+      showSuccessDialoge(context,"Successfully Created");
 // snack.snackBar("Confirmation", "Event Added Successfully", Colors.blue,
 //     Colors.white, "images/checked.png");
 

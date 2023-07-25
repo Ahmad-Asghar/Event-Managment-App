@@ -3,15 +3,10 @@ import 'package:e_commerce/Views/nav_bar.dart';
 import 'package:e_commerce/Widgets/DialougeBox.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:get/get.dart';
-
-import '../Controller/SignUpMethod.dart';
-import '../Models/UserModel.dart';
-import '../Views/HomePage.dart';
-import '../Widgets/ErrorDialouge.dart';
-import '../Widgets/Snackbar.dart';
-import '../Widgets/TextField.dart';
+import '../../Models/UserModel.dart';
+import '../../Widgets/ErrorDialouge.dart';
+import '../../Widgets/Snackbar.dart';
 class LoginMethod extends GetxController {
 
   Snackbar snack = Get.put(Snackbar());
@@ -30,7 +25,7 @@ print("HI");
 
       snack.snackBar("Congratulations", 'Successfully Loged In',Colors.blue,Colors.white,"images/checked.png");
       Navigator.pop(context);
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: userModel, firebaseuser: credentials!.user!)));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: userModel, firebaseuser: credentials!.user!, screenNO: 0,)));
 
     }
     on FirebaseAuthException catch(exception){

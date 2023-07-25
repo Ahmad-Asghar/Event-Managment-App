@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/Models/UserModel.dart';
 import 'package:e_commerce/Views/Events_Joined.dart';
 import 'package:e_commerce/Views/Events_created.dart';
-import 'package:e_commerce/Views/LoginPage.dart';
+import 'package:e_commerce/Views/LoginwithGmail/LoginPage.dart';
 import 'package:e_commerce/Views/splash_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +12,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../Localization/code/local_keys.g.dart';
-import 'SignUpPage.dart';
+import 'LoginwithGmail/SignUpPage.dart';
 
 class Profile extends StatefulWidget {
   final UserModel userModel;

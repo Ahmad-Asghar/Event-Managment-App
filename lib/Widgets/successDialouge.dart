@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-Future<void> showSuccessDialoge(BuildContext context) async{
+Future<void> showSuccessDialoge(BuildContext context,String messege) async{
 
   showDialog(context: context, barrierDismissible: false,builder: (BuildContext context){
 
@@ -13,7 +13,7 @@ Future<void> showSuccessDialoge(BuildContext context) async{
             children: [
               Icon(Icons.check_circle,color: Colors.orange[500],size: 10.h,),
               SizedBox(height: 2.h,),
-              Text("Successfully Done"),
+              Text(messege),
               TextButton(onPressed: (){Navigator.pop(context);}, child: Text("OK")),
             ],
           ),

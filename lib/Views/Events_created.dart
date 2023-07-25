@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../Models/UserModel.dart';
-
+import '../Models/Event.dart';
 class Created_Events extends StatefulWidget {
   final UserModel userModel;
   final User firebaseuser;
@@ -21,274 +21,109 @@ class _Created_EventsState extends State<Created_Events> {
     return Scaffold(
       body: Container(
         child: Column(
-        children: [
-          StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection("Events").orderBy('eventCreatedTime',descending: true)
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text("Something wrong!"),
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return Expanded(
-                  child: ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        String event_creator_Image = snapshot
-                            .data!.docs[index]['senderModel'][1]
-                            .toString();
-                        String event_creator_Name = snapshot
-                            .data!.docs[index]['senderModel'][2]
-                            .toString();
-                        String event_IMage = snapshot
-                            .data!.docs[index]["eventImage"]
-                            .toString();
-                        String event_date = snapshot
-                            .data!.docs[index]["dateTime"]
-                            .toString();
-                        String event_Name = snapshot
-                            .data!.docs[index]["eventName"]
-                            .toString();
-                        String max_entries = snapshot
-                            .data!.docs[index]["maxEntries"]
-                            .toString();
-                        String location = snapshot
-                            .data!.docs[index]["location"]
-                            .toString();
-                        String price =
-                        snapshot.data!.docs[index]["price"].toString();
-                        String creator =
-                        snapshot.data!.docs[index]["sender"][0].toString();
-                        print(creator);
-                        if(creator==widget.userModel.uid.toString()){
+          children: [
+            StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("Events")
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("Something wrong!"),
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  final data = snapshot.data!.docs;
+                  final filteredUEvent = data
+                      .where((doc) => doc['sender'].contains(widget.userModel.uid))
+                      .map((doc) => Event.fromMap(doc.data() as Map<String, dynamic>))
+                      .toList();
+                  print(filteredUEvent.length.toString());
+                  if (filteredUEvent.length==0) {
+                    return Expanded(child: Center(child: Text("No Events to Show Yet!")));
+                  }
+                  else{
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: filteredUEvent.length,
+                        itemBuilder: (BuildContext context, int index) {
+
+                          final joinedEvent = filteredUEvent[index];
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Material(
-                              elevation: 15,
-                              borderRadius: BorderRadius.circular(5),
-                              child: Container(
-                                height: 48.h,
-                                child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 2.w, vertical: 1.h),
-                                      child: Row(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 3.5.h,
-                                            backgroundImage: NetworkImage(
-                                                event_creator_Image),
-                                          ),
-                                          SizedBox(
-                                            width: 3.w,
-                                          ),
-                                          Text(
-                                            event_creator_Name,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 3.h),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 2.w),
-                                      child: Container(
-                                        height: 39.h,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                            BorderRadius.circular(5)),
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 2.w,
-                                                  vertical: 1.h),
-                                              child: Material(
-                                                color: Colors.orange[100],
-                                                borderRadius:
-                                                BorderRadius.circular(5),
-                                                elevation: 10,
+                            padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.5.h),
+                            child: Container(
+                              decoration: BoxDecoration(
 
-                                                child: Container(
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
 
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius.circular(5),
-                                                    child: CachedNetworkImage(
+                              height: 15.h,
+                              width: double.infinity,
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 3.w,),
+                                  Material(
 
-
-                                                      imageUrl: event_IMage,
-                                                      placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                      BorderRadius
-                                                          .circular(5)),
-                                                  height: 25.h,
-                                                  width: double.infinity,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 2.w),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                      BorderRadius
-                                                          .circular(5),
-                                                      border: Border.all(
-                                                          color: Colors.grey,
-                                                          width: 1),
-                                                    ),
-                                                    child: Center(
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                        children: [
-                                                          Icon(
-                                                            Icons.person,
-                                                            color:
-                                                            Colors.orange,
-                                                            size: 2.5.h,
-                                                          ),
-                                                          Text(
-                                                            max_entries,
-                                                            style: TextStyle(
-                                                                fontSize: 2.h,
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    height: 3.5.h,
-                                                    width: 15.w,
-                                                  ),
-                                                  Text(
-                                                    event_Name,
-                                                    style: TextStyle(
-                                                        fontSize: 3.h,
-                                                        fontWeight:
-                                                        FontWeight.bold),
-                                                  ),
-                                                  Text(
-                                                    "Dated: " + event_date,
-                                                    style: TextStyle(
-                                                        fontSize: 1.5.h,
-                                                        fontWeight:
-                                                        FontWeight.bold),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 1.h,
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 4.w),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    child: Row(
-                                                      children: [
-                                                        Icon(
-                                                          Icons
-                                                              .location_on_outlined,
-                                                          color:
-                                                          Colors.orange,
-                                                        ),
-                                                        Text(
-                                                          location,
-                                                          style: TextStyle(
-                                                              fontSize: 2.h,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .bold),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 1.w,
-                                                        ),
-                                                        Icon(
-                                                          Icons
-                                                              .monetization_on_outlined,
-                                                          color:
-                                                          Colors.orange,
-                                                        ),
-                                                        Text(
-                                                          price,
-                                                          style: TextStyle(
-                                                              fontSize: 2.h,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .bold),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  MaterialButton(
-                                                    shape:
-                                                    RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius
-                                                          .circular(10),
-                                                    ),
-                                                    color: Colors.orange[400],
-                                                    height: 5.h,
-                                                    onPressed: () {},
-                                                    child: Row(
-                                                      children: [
-                                                        Icon(Icons.add),
-                                                        Text("Join Event")
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
+                                    borderRadius: BorderRadius.circular(10),
+                                    elevation: 10,
+                                    child: Container(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: CachedNetworkImage(
+                                          imageUrl: joinedEvent.eventImage.toString(),
+                                          placeholder: (context, url) =>
+                                              Center(child: CircularProgressIndicator()),
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10)),
+                                      height: 12.h,
+                                      width: 25.w,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  SizedBox(width: 2.h,),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(joinedEvent.eventName.toString(),style: TextStyle(
+                                          fontSize: 2.4.h,fontWeight: FontWeight.bold
+                                      ),),
+                                      Text("You're Creator",style: TextStyle(
+                                          fontSize: 2.h,
+                                          color: Colors.green
+                                      ),),
+                                      Text(joinedEvent.price.toString(),style: TextStyle(
+                                          fontSize: 2.4.h,fontWeight: FontWeight.bold
+                                      ),),
+                                      Text("Location : "+joinedEvent.location.toString(),style: TextStyle(
+                                          fontSize: 2.h
+                                      ),),
+
+                                    ],
+                                  ),
+                                ],
                               ),
+
                             ),
                           );
-                        }
+                        },
+                      ),
+                    );
+                  }
 
-                      }),
-                );
-              }),
 
-        ],
+                }),
+
+          ],
         ),
       ),
     );

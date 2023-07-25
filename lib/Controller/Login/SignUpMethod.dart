@@ -2,13 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../Models/UserModel.dart';
-import '../Views/CompleteProfile.dart';
-import '../Widgets/DialougeBox.dart';
-import '../Widgets/ErrorDialouge.dart';
-import '../Widgets/Snackbar.dart';
-
+import '../../Models/UserModel.dart';
+import '../../Views/LoginwithGmail/CompleteProfile.dart';
+import '../../Widgets/DialougeBox.dart';
+import '../../Widgets/ErrorDialouge.dart';
+import '../../Widgets/Snackbar.dart';
 class SignUpMethod extends GetxController {
   Snackbar snack = Get.put(Snackbar());
 

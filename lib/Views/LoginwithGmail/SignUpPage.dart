@@ -2,9 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:get/get.dart';
-
-import '../Controller/SignUpMethod.dart';
-import '../Widgets/TextField.dart';
+import '../../Controller/Login/SignUpMethod.dart';
+import '../../Widgets/TextField.dart';
 import 'LoginPage.dart';
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);

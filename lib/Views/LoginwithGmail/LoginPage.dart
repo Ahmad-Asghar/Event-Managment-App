@@ -1,12 +1,11 @@
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:get/get.dart';
-
-import '../Controller/LoginMethod.dart';
-import '../Widgets/TextField.dart';
-import 'LoginWithPhoneNumber/EnterNumber.dart';
+import '../../Controller/Login/LoginMethod.dart';
+import '../../Widgets/TextField.dart';
+import '../LoginWithPhoneNumber/EnterNumber.dart';
 import 'SignUpPage.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

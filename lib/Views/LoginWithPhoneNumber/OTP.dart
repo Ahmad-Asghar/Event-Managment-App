@@ -1,4 +1,4 @@
-import 'package:e_commerce/Views/SignUpPage.dart';
+import 'package:e_commerce/Views/LoginwithGmail/SignUpPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';

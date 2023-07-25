@@ -1,20 +1,15 @@
-import 'package:date_time_format/date_time_format.dart';
 import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:e_commerce/Controller/Upload_Event.dart';
-import 'package:e_commerce/Views/nav_bar.dart';
+import 'package:e_commerce/Controller/Event_controllers/Upload_Event.dart';
 import 'package:e_commerce/Widgets/Event_data_textfield.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_material_pickers/flutter_material_pickers.dart';
-import 'package:get/get.dart' hide Trans;
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import '../Localization/code/local_keys.g.dart';
-import '../Models/UserModel.dart';
-
+import '../../Localization/code/local_keys.g.dart';
+import '../../Models/UserModel.dart';
+import 'package:file_picker/file_picker.dart';
 class Add_Event extends StatefulWidget {
   final UserModel userModel;
   final User firebaseuser;
@@ -26,56 +21,55 @@ class Add_Event extends StatefulWidget {
 
 class _Add_EventState extends State<Add_Event> {
   File? imageFile;
+
   Upload_Event upload= Upload_Event();
   Future<void> _selectEventDate(BuildContext context) async {
-    DateTime _selectedDate = DateTime.now();
+    DateTime selectedDate = DateTime.now();
     DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: _selectedDate,
+        initialDate: selectedDate,
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
-    if (picked != null && picked != _selectedDate)
+    if (picked != null && picked != selectedDate)
       setState(() {
         String date = picked.toString();
         List<String> date1 = date.split(" ");
         dateTime.text = date1[0];
       });
   }
-
   Future<void> _selectEndTime(BuildContext context) async {
-    TimeOfDay _selectedTime = TimeOfDay.now();
+    TimeOfDay selectedTime = TimeOfDay.now();
 
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialEntryMode: TimePickerEntryMode.dial,
-      initialTime: _selectedTime,
+      initialTime: selectedTime,
     );
-    if (picked != null && picked != _selectedTime) {
+    if (picked != null && picked != selectedTime) {
       setState(() {
-        _selectedTime = picked;
-        endTime.text = _selectedTime.toString();
+        selectedTime = picked;
+        endTime.text = selectedTime.toString();
       });
     }
   }
-
   void _selectStartTime(BuildContext context) async {
-    TimeOfDay _selectedTime = TimeOfDay.now();
+    TimeOfDay selectedTime = TimeOfDay.now();
 
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialEntryMode: TimePickerEntryMode.dial,
-      initialTime: _selectedTime,
+      initialTime: selectedTime,
     );
-    if (picked != null && picked != _selectedTime) {
+    if (picked != null && picked != selectedTime) {
       setState(() {
-        _selectedTime = picked;
-        startTime.text = _selectedTime.toString();
+        selectedTime = picked;
+        startTime.text = selectedTime.toString();
       });
     }
   }
   selectImageSource(){
     showModalBottomSheet(
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(15),
                 topLeft: Radius.circular(15)
@@ -98,7 +92,7 @@ class _Add_EventState extends State<Add_Event> {
                     ),
                     onTap: (){
 
-                      getImagefromGallery();
+                      getImageFromGallery();
 
                       Navigator.pop(context);
                     },
@@ -118,7 +112,7 @@ class _Add_EventState extends State<Add_Event> {
                   ),
                   onTap: (){
 
-                    getImagefromCamera();
+                    getImageFromCamera();
                     Navigator.pop(context);
                   },
                   leading: Icon(Icons.camera_alt,color: Colors.black,),
@@ -133,35 +127,35 @@ class _Add_EventState extends State<Add_Event> {
         }
     );
   }
-  getImagefromCamera (){
-    Future<void> _getFromGallery() async {
+  getImageFromCamera (){
+    Future<void> getFromGallery() async {
 
       final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
 
       if (pickedFile != null) {
         setState(() {
-          imageFile = File(pickedFile.path ) as File?;
+          imageFile = File(pickedFile.path );
         });
 
       }
     }
 
-    _getFromGallery();
+    getFromGallery();
   }
-  getImagefromGallery (){
-    Future<void> _getFromGallery() async {
+  getImageFromGallery (){
+    Future<void> getFromGallery() async {
 
       final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
         setState(() {
-          imageFile = File(pickedFile.path ) as File?;
+          imageFile = File(pickedFile.path );
         });
 
       }
     }
 
-    _getFromGallery();
+    getFromGallery();
   }
   TextEditingController eventName = TextEditingController();
   TextEditingController location = TextEditingController();
@@ -172,6 +166,7 @@ class _Add_EventState extends State<Add_Event> {
   TextEditingController startTime = TextEditingController();
   TextEditingController endTime = TextEditingController();
   TextEditingController price = TextEditingController();
+  TextEditingController description=TextEditingController();
   String privacy = 'Public';
   String eventStatus = 'Closed';
 
@@ -288,6 +283,7 @@ backgroundColor: Colors.orange[300],
                 height: 1.5.h,
               ),
               Event_Textfield(
+                readOnly: false,
                 text: eventName,
                 icon: Icons.event,
                 hintext: LocaleKeys.event_name.tr(),
@@ -295,6 +291,7 @@ backgroundColor: Colors.orange[300],
                 onChanged: (value){},
               ),
               Event_Textfield(
+                readOnly: false,
                   text: location,
                   icon: Icons.location_on_outlined,
                   hintext: LocaleKeys.location.tr(),
@@ -305,6 +302,7 @@ backgroundColor: Colors.orange[300],
                 children: [
                   Expanded(
                       child: Event_Textfield(
+                          readOnly: true,
                           onChanged: (value){},
                           text: dateTime,
                           icon: Icons.event,
@@ -315,6 +313,7 @@ backgroundColor: Colors.orange[300],
 
                   Expanded(
                       child: Event_Textfield(
+                          readOnly: false,
                           onChanged: (value){},
                           text: maxEntries,
                           icon: Icons.tag,
@@ -323,12 +322,14 @@ backgroundColor: Colors.orange[300],
                 ],
               ),
               Event_Textfield(
+                  readOnly: false,
                   onChanged: (value){},
                   text: tags,
                   icon: Icons.tag,
                   hintext: LocaleKeys.tags.tr(),
                   onpressed: () {}),
               Event_Textfield(
+                  readOnly: false,
                   onChanged: (value){},
                   text: frequency,
                   icon: Icons.cached,
@@ -338,6 +339,7 @@ backgroundColor: Colors.orange[300],
                 children: [
                   Expanded(
                       child: Event_Textfield(
+                          readOnly: true,
                           onChanged: (value){},
                           text: startTime,
                           icon: Icons.alarm_on,
@@ -347,6 +349,7 @@ backgroundColor: Colors.orange[300],
                           })),
                   Expanded(
                       child: Event_Textfield(
+                          readOnly: true,
                           onChanged: (value){},
                           text: endTime,
                           icon: Icons.alarm_on,
@@ -373,6 +376,7 @@ backgroundColor: Colors.orange[300],
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w),
                 child: TextField(
+                  controller: description,
                   maxLines: 5,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
@@ -439,6 +443,7 @@ backgroundColor: Colors.orange[300],
                     ),
                     Expanded(
                         child: Event_Textfield(
+                            readOnly: false,
                             onChanged: (value){},
                             text: price,
                             icon: Icons.currency_bitcoin,
@@ -465,6 +470,7 @@ backgroundColor: Colors.orange[300],
                               context,
                             [widget.userModel.uid.toString(),widget.userModel.profilepic.toString(),widget.userModel.fullName.toString(),widget.userModel.email.toString()],
                             imageFile!,
+                              description.text.toString(),
                               eventName.text.toString(),
                               location.text.toString(),
                               dateTime.text.toString(),

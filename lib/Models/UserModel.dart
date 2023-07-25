@@ -1,3 +1,5 @@
+
+
 class UserModel {
   String? uid;
   String? fullName;
@@ -12,6 +14,7 @@ class UserModel {
     email = map['email'];
     profilepic = map['profilepic'];
   }
+
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,

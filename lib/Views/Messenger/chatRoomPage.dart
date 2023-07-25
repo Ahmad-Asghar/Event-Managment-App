@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce/Views/Messeges.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../Models/MessegeModel.dart';
-import '../Models/UserModel.dart';
-import '../Models/chatRoomModel.dart';
-import '../Widgets/Snackbar.dart';
-import 'nav_bar.dart';
+import '../../Models/MessegeModel.dart';
+import '../../Models/UserModel.dart';
+import '../../Models/chatRoomModel.dart';
+import '../../Widgets/Snackbar.dart';
+import '../nav_bar.dart';
 
 class ChatRoomPage extends StatefulWidget {
   final UserModel userModel;
@@ -94,9 +94,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
           leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
-                Get.to(Home(
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(
                     userModel: widget.userModel,
-                    firebaseuser: widget.firebaseuser));
+                    firebaseuser: widget.firebaseuser, screenNO: 3,)));
               },
               icon: Icon(Icons.arrow_back_ios_sharp)),
           title: Row(
