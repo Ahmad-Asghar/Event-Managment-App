@@ -14,25 +14,31 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   checkUsers() async {
-    User? currentuser=FirebaseAuth.instance.currentUser;
+    User? currentUser = FirebaseAuth.instance.currentUser;
 
-    if(currentuser!=null){
-      var fetchedUserModel = await   FirebaseHelper.getUserMOdelById(currentuser.uid) ;
-      if(fetchedUserModel!=null){
-        Timer(Duration(seconds: 4),(){
-Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: fetchedUserModel, firebaseuser: currentuser, screenNO: 0,)));
-        // Get.to(Home(userModel: fetchedUserModel, firebaseuser: currentuser));
+    if (currentUser != null) {
+      var fetchedUserModel =
+          await FirebaseHelper.getUserMOdelById(currentUser.uid);
+      if (fetchedUserModel != null) {
+        Timer(const Duration(seconds: 4), () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Home(
+                        userModel: fetchedUserModel,
+                        firebaseuser: currentUser,
+                        screenNO: 0,
+                      )));
+          // Get.to(Home(userModel: fetchedUserModel, firebaseuser: currentuser));
         });
       }
-    }
-    else{
-      Timer(Duration(seconds: 4),(){
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+    } else {
+      Timer(Duration(seconds: 4), () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       });
     }
-
   }
 
   initState() {
@@ -42,6 +48,7 @@ Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: fe
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -52,10 +59,10 @@ Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: fe
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(image: AssetImage("images/ecommerce.png"),
+              Image(
+                image: AssetImage("images/ecommerce.png"),
                 height: 20.h,
               ),
-
             ],
           ),
         ),

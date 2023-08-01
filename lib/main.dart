@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget {
     ]);
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
-
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: context.localizationDelegates,
