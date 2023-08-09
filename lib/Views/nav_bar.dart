@@ -15,7 +15,12 @@ class Home extends StatefulWidget {
   final UserModel userModel;
   final User firebaseuser;
   final int screenNO;
-  const Home({super.key, required this.userModel, required this.firebaseuser, required this.screenNO, });
+  const Home({
+    super.key,
+    required this.userModel,
+    required this.firebaseuser,
+    required this.screenNO,
+  });
 
   @override
   State<Home> createState() => _HomeState();
@@ -23,236 +28,246 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late int index;
- late List<StatefulWidget> screen;
+  late List<StatefulWidget> screen;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    index=widget.screenNO;
+    index = widget.screenNO;
     screen = [
-  HomePage(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
-  Feeds(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
-  Add_Event(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
-  Messeges(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
-  Profile(userModel: widget.userModel, firebaseuser: widget.firebaseuser,),
-  ];
+      HomePage(
+        userModel: widget.userModel,
+        firebaseuser: widget.firebaseuser,
+      ),
+      Feeds(
+        userModel: widget.userModel,
+        firebaseUser: widget.firebaseuser,
+      ),
+      Add_Event(
+        userModel: widget.userModel,
+        firebaseuser: widget.firebaseuser,
+      ),
+      Messeges(
+        userModel: widget.userModel,
+        firebaseuser: widget.firebaseuser,
+      ),
+      Profile(
+        userModel: widget.userModel,
+        firebaseuser: widget.firebaseuser,
+      ),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
-       bool check= askConfirmation(context) as bool;
-       return check;
+      onWillPop: () async {
+        bool check = askConfirmation(context) as bool;
+        return check;
       },
       child: SafeArea(
         child: Scaffold(
-          body: screen[index],
-          bottomNavigationBar: BottomAppBar(
-            elevation: 0,
-            child: Container(
-              color: Colors.white,
-              height: 10.h,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              index = 0;
-                              setState(() {});
-                            },
-                            child: CircleAvatar(
-                              radius: 20,
-                              backgroundColor: index == 0
-                                  ? Colors.orange[300]
-                                  : Colors.grey[100],
-                              child: ImageIcon(
-                                  size: 15,
-                                  const AssetImage("images/home.png",),
-                                  color: index == 0
-                                      ? Colors.white
-                                      : Colors.orange[500]
+            body: screen[index],
+            bottomNavigationBar: BottomAppBar(
+              elevation: 0,
+              child: Container(
+                color: Colors.white,
+                height: 10.h,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                index = 0;
+                                setState(() {});
+                              },
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundColor: index == 0
+                                    ? Colors.orange[300]
+                                    : Colors.grey[100],
+                                child: ImageIcon(
+                                    size: 15,
+                                    const AssetImage(
+                                      "images/home.png",
+                                    ),
+                                    color: index == 0
+                                        ? Colors.white
+                                        : Colors.orange[500]),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            LocaleKeys.home,
-                            style: TextStyle(
-                              color: index == 0
-                                  ? Colors.orange[500]
-                                  : const Color(0xff686868),
-                              fontWeight: FontWeight.w500,
+                            const SizedBox(
+                              height: 5,
                             ),
-                          ).tr(),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              index = 1;
+                            Text(
+                              LocaleKeys.home,
+                              style: TextStyle(
+                                color: index == 0
+                                    ? Colors.orange[500]
+                                    : const Color(0xff686868),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ).tr(),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                index = 1;
 
-                              setState(() {});
-                            },
-                            child: CircleAvatar(
-                              radius: 20,
-                              backgroundColor: index == 1
-                                  ? Colors.orange[300]
-                                  : Colors.grey[100],
-                              child: ImageIcon(
-                                  size: 15,
-                                  const AssetImage("images/category.png"),
-                                  color: index == 1
-                                      ? Colors.white
-                                      : Colors.orange[500]
+                                setState(() {});
+                              },
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundColor: index == 1
+                                    ? Colors.orange[300]
+                                    : Colors.grey[100],
+                                child: ImageIcon(
+                                    size: 15,
+                                    const AssetImage("images/category.png"),
+                                    color: index == 1
+                                        ? Colors.white
+                                        : Colors.orange[500]),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            LocaleKeys.feeds,
-                            style: TextStyle(
-                              color: index == 1
-                                  ? Colors.orange[500]
-                                  : const Color(0xff686868),
-                              fontWeight: FontWeight.w500,
+                            const SizedBox(
+                              height: 5,
                             ),
-                          ).tr(),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              index = 2;
+                            Text(
+                              LocaleKeys.feeds,
+                              style: TextStyle(
+                                color: index == 1
+                                    ? Colors.orange[500]
+                                    : const Color(0xff686868),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ).tr(),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                index = 2;
 
-                              setState(() {});
-                            },
-                            child: CircleAvatar(
-                              radius: 20,
-                              backgroundColor: index == 2
-                                  ? Colors.orange[300]
-                                  : Colors.grey[100],
-                              child: ImageIcon(
-                                  size: 70,
-                                  AssetImage("images/plus.png",
-
-                                  ),
-                                  color: index == 2
-                                      ? Colors.white
-                                      : Colors.orange[500]
+                                setState(() {});
+                              },
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundColor: index == 2
+                                    ? Colors.orange[300]
+                                    : Colors.grey[100],
+                                child: ImageIcon(
+                                    size: 70,
+                                    AssetImage(
+                                      "images/plus.png",
+                                    ),
+                                    color: index == 2
+                                        ? Colors.white
+                                        : Colors.orange[500]),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            LocaleKeys.add_new,
-                            style: TextStyle(
-                              color: index == 2
-                                  ? Colors.orange[500]
-                                  : const Color(0xff686868),
-                              fontWeight: FontWeight.w500,
+                            const SizedBox(
+                              height: 5,
                             ),
-                          ).tr(),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              index = 3;
+                            Text(
+                              LocaleKeys.add_new,
+                              style: TextStyle(
+                                color: index == 2
+                                    ? Colors.orange[500]
+                                    : const Color(0xff686868),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ).tr(),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                index = 3;
 
-                              setState(() {});
-                            },
-                            child: CircleAvatar(
-                              radius: 20,
-                              backgroundColor: index == 3
-                                  ? Colors.orange[300]
-                                  : Colors.grey[100],
-                              child: ImageIcon(
-                                  size: 15,
-                                  const AssetImage("images/contact.png"),
-                                  color: index == 3
-                                      ? Colors.white
-                                      : Colors.orange[500]
+                                setState(() {});
+                              },
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundColor: index == 3
+                                    ? Colors.orange[300]
+                                    : Colors.grey[100],
+                                child: ImageIcon(
+                                    size: 15,
+                                    const AssetImage("images/contact.png"),
+                                    color: index == 3
+                                        ? Colors.white
+                                        : Colors.orange[500]),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            LocaleKeys.message,
-                            style: TextStyle(
-                              color: index == 3
-                                  ? Colors.orange[500]
-                                  : const Color(0xff686868),
-                              fontWeight: FontWeight.w500,
+                            const SizedBox(
+                              height: 5,
                             ),
-                          ).tr(),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              index = 4;
+                            Text(
+                              LocaleKeys.message,
+                              style: TextStyle(
+                                color: index == 3
+                                    ? Colors.orange[500]
+                                    : const Color(0xff686868),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ).tr(),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                index = 4;
 
-                              setState(() {});
-                            },
-                            child: CircleAvatar(
-                              radius: 20,
-                              backgroundColor: index == 4
-                                  ? Colors.orange[300]
-                                  : Colors.grey[100],
-                              child: ImageIcon(
-                                  size: 15,
-                                  const AssetImage("images/profile.png"),
-                                  color: index == 4
-                                      ? Colors.white
-                                      : Colors.orange[500]
+                                setState(() {});
+                              },
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundColor: index == 4
+                                    ? Colors.orange[300]
+                                    : Colors.grey[100],
+                                child: ImageIcon(
+                                    size: 15,
+                                    const AssetImage("images/profile.png"),
+                                    color: index == 4
+                                        ? Colors.white
+                                        : Colors.orange[500]),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            LocaleKeys.profile,
-                            style: TextStyle(
-                              color: index == 4
-                                  ? Colors.orange[500]
-                                  : const Color(0xff686868),
-                              fontWeight: FontWeight.w500,
+                            const SizedBox(
+                              height: 5,
                             ),
-                          ).tr(),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                            Text(
+                              LocaleKeys.profile,
+                              style: TextStyle(
+                                color: index == 4
+                                    ? Colors.orange[500]
+                                    : const Color(0xff686868),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ).tr(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )
-        ),
+            )),
       ),
     );
   }
 
   Future askConfirmation(BuildContext context) {
-
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -268,7 +283,7 @@ class _HomeState extends State<Home> {
             ),
             TextButton(
               onPressed: () {
-               exit(0);
+                exit(0);
               },
               child: Text("Yes"),
             ),
@@ -276,7 +291,5 @@ class _HomeState extends State<Home> {
         );
       },
     );
-
-
   }
 }

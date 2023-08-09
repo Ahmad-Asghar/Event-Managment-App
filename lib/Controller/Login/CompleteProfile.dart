@@ -17,11 +17,9 @@ import '../../Widgets/DialougeBox.dart';
 import '../../Widgets/Snackbar.dart';
 
 class CompleteProfileData extends GetxController {
-
-
   Snackbar snack = Get.put(Snackbar());
-  Future<void> uploadProfilePic(BuildContext context,
-      File imageFile, String fullName, User user, UserModel model) async {
+  Future<void> uploadProfilePic(BuildContext context, File imageFile,
+      String fullName, User user, UserModel model) async {
     showWaitingDialouge(context);
     UploadTask uploadTask = FirebaseStorage.instance
         .ref("Profile Pictures")
@@ -37,12 +35,18 @@ class CompleteProfileData extends GetxController {
         .collection("Users")
         .doc(user.uid.toString())
         .set(model.toMap())
-        .onError((error, stackTrace) => {
-              snack.snackBar("Error", error.toString(), Colors.red.shade400,
-                  Colors.white, "images/close.png")
-            });
-Navigator.pop(context);
-Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: model, firebaseuser: user, screenNO: 0,)));
+        .onError((error, stackTrace) =>
+    {snack.snackBar("Error", error.toString(), Colors.red.shade400,
+                  Colors.white, "images/close.png")});
+    Navigator.pop(context);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Home(
+                  userModel: model,
+                  firebaseuser: user,
+                  screenNO: 0,
+                )));
     // snack.snackBar("Confirmation", "Successfully Completed Profile",
     //     Colors.blue, Colors.white, "images/checked.png");
     // // Get.to(Home());

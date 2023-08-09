@@ -47,7 +47,6 @@ class MyApp extends StatelessWidget {
             textTheme: GoogleFonts.comfortaaTextTheme(Theme.of(context).textTheme),
           ),
           home: SplashScreen(),
-          //comment
         );
       },
 
