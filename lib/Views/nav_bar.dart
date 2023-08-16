@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:e_commerce/Views/Events/HomePage.dart';
-import 'package:e_commerce/Views/Profile.dart';
+import 'package:e_commerce/Views/Profile/Profile.dart';
 import 'package:e_commerce/Views/Events/add_event.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';

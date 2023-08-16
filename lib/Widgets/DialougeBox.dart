@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 Future<void> showWaitingDialouge(BuildContext context)async {
@@ -12,7 +13,10 @@ Future<void> showWaitingDialouge(BuildContext context)async {
           child: Center(
             child: Column(
               children: [
-                CircularProgressIndicator(),
+                Container(
+                    height: 100,
+                    width: 100,
+                    child: Lottie.asset("images/loading.json")),
                 SizedBox(height: 3.h,),
                 Text("Wait until the process completes"),
               ],

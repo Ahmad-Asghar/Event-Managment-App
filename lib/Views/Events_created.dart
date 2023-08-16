@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../Models/UserModel.dart';
 import '../Models/Event.dart';
@@ -59,7 +60,6 @@ class _Created_EventsState extends State<Created_Events> {
                             padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.5.h),
                             child: Container(
                               decoration: BoxDecoration(
-
                                   borderRadius: BorderRadius.circular(10)
                               ),
 
@@ -78,7 +78,9 @@ class _Created_EventsState extends State<Created_Events> {
                                         child: CachedNetworkImage(
                                           imageUrl: joinedEvent.eventImage.toString(),
                                           placeholder: (context, url) =>
-                                              Center(child: CircularProgressIndicator()),
+                                              Center(child:Padding(
+                                                  padding: EdgeInsets.all(50),
+                                                  child: Lottie.asset("images/loading.json"))),
                                           fit: BoxFit.cover,
                                         ),
                                       ),

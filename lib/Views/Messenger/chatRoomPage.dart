@@ -101,9 +101,12 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
               icon: Icon(Icons.arrow_back_ios_sharp)),
           title: Row(
             children: [
-              CircleAvatar(
+              widget.targetuser.profilepic.toString()!=""? CircleAvatar(
                 backgroundImage:
                     NetworkImage(widget.targetuser.profilepic.toString()),
+              ):CircleAvatar(
+                backgroundImage:
+                AssetImage("images/minion.jpg")
               ),
               SizedBox(
                 width: 5.w,

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../Controller/chatroom_check.dart';
-import '../Models/UserModel.dart';
-import '../Models/chatRoomModel.dart';
-import 'Messenger/chatRoomPage.dart';
-import 'nav_bar.dart';
+import '../../Controller/chatroom_check.dart';
+import '../../Models/UserModel.dart';
+import '../../Models/chatRoomModel.dart';
+import '../Messenger/chatRoomPage.dart';
+import '../nav_bar.dart';
 
 class CheckProfile extends StatefulWidget {
   final UserModel userModel;
@@ -90,7 +90,7 @@ class _CheckProfileState extends State<CheckProfile> {
                                   child: Material(
                                     elevation: 10,
                                     borderRadius: BorderRadius.circular(30),
-                                    child: Container(
+                                    child: user.profilepic!=""?Container(
                                       height: MediaQuery.sizeOf(context).height * 0.4,
                                       width: double.infinity,
                                       decoration: BoxDecoration(
@@ -100,6 +100,18 @@ class _CheckProfileState extends State<CheckProfile> {
                                               user.profilepic.toString(),
                                             ),
                                           fit: BoxFit.cover
+                                        ),
+                                      ),
+                                    ):Container(
+                                      height: MediaQuery.sizeOf(context).height * 0.4,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30),
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                              "images/minion.jpg",
+                                            ),
+                                            fit: BoxFit.cover
                                         ),
                                       ),
                                     ),

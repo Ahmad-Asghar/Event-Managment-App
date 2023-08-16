@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce/Controller/Event_controllers/leave_Event.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../Models/UserModel.dart';
 import '../Models/Event.dart';
@@ -97,7 +98,10 @@ class _Joined_EventsState extends State<Joined_Events> {
                                                 .toString(),
                                             placeholder: (context, url) => Center(
                                                 child:
-                                                    CircularProgressIndicator()),
+                                                Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: Lottie.asset("images/loading.json"))),
                                             fit: BoxFit.cover,
                                           ),
                                         ),

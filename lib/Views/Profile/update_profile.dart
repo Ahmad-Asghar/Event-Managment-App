@@ -1,34 +1,30 @@
 import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../Controller/Login/CompleteProfile.dart';
+import '../../Controller/Login/update_profile.dart';
 import '../../Models/UserModel.dart';
-import '../../Widgets/ErrorDialouge.dart';
-import '../../Widgets/Snackbar.dart';
-import '../../Widgets/TextField.dart';
+import '../../Widgets/login-textfield.dart';
 
-class CompleteProfile extends StatefulWidget {
+class UpdateProfile extends StatefulWidget {
   final UserModel userModel;
   final User firebaseuser;
-  const CompleteProfile(
+  const UpdateProfile(
       {Key? key, required this.userModel, required this.firebaseuser})
       : super(key: key);
 
   @override
-  State<CompleteProfile> createState() => _CompleteProfileState();
+  State<UpdateProfile> createState() => _UpdateProfileState();
 }
 
-class _CompleteProfileState extends State<CompleteProfile> {
+class _UpdateProfileState extends State<UpdateProfile> {
+
   File? imageFile;
-  Snackbar snack = Get.put(Snackbar());
-  CompleteProfileData cmp = Get.put(CompleteProfileData());
+
   selectImageSource() {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
@@ -95,7 +91,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
   getImagefromCamera() {
     Future<void> _getFromGallery() async {
       final pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.camera);
+      await ImagePicker().pickImage(source: ImageSource.camera);
 
       if (pickedFile != null) {
         setState(() {
@@ -110,7 +106,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
   getImagefromGallery() {
     Future<void> _getFromGallery() async {
       final pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
+      await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
         setState(() {
@@ -122,28 +118,49 @@ class _CompleteProfileState extends State<CompleteProfile> {
     _getFromGallery();
   }
 
-  final _formkey = GlobalKey<FormState>();
-  TextEditingController completeprofilecontroller = TextEditingController();
-  TextEditingController aboutcontroller = TextEditingController();
+  TextEditingController emailController=TextEditingController();
+  TextEditingController nameController=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orange[600],
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text(
-          "Complete Profile",
-          style: TextStyle(),
-        ),
-      ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        child: SingleChildScrollView(
+      child: Scaffold(
+        body: Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 7.w),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(height: 8.h,width: double.infinity,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'update profile',
+                    style: TextStyle(
+                      fontSize: 3.7.h,
+                      //fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 0.7.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffffbd30),
+                        borderRadius: BorderRadius.circular(20)),
+                    height: 0.6.h,
+                    width: 40.w,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height:3.h,
+              ),
               CupertinoButton(
                   onPressed: () {
                     selectImageSource();
@@ -152,73 +169,62 @@ class _CompleteProfileState extends State<CompleteProfile> {
                       radius: 10.h,
                       child: imageFile != null
                           ? CircleAvatar(
-                              backgroundImage: FileImage(
-                                imageFile!,
-                              ),
-                              radius: 10.h,
-                            )
-                          : CircleAvatar(
-                              backgroundColor: Colors.red[300],
-                              child: Icon(
-                                Icons.person_outline_outlined,
-                                color: Colors.white,
-                                size: 9.h,
-                              ),
-                              radius: 10.h,
-                            ))),
-              Form(
-                  key: _formkey,
-                  child: Column(
-                    children: [
-                      Textfield(
-                          email: completeprofilecontroller,
-                          icon: Icons.person,
-                          hintext: "Full Name",
-                          mesege: "Enter Name"),
-                      Textfield(
-                          email: aboutcontroller,
-                          icon: Icons.person,
-                          hintext: "About",
-                          mesege: "Could not be empty"),
-                    ],
-                  )),
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                onPressed: () {
-                  if (_formkey.currentState!.validate()) {
-                    print("Validation Working");
-                    if (completeprofilecontroller == "" || imageFile == null) {
-                      ErrorDialoge(
-                          context, "Please Fill Name or Profile Picture");
-                      // snack.snackBar("Error", "Please Fill Name or Profile Picture",Colors.red.shade400,Colors.white,"images/close.png");
-                    } else {
-                      cmp.uploadProfilePic(
-                          context,
+                        backgroundImage: FileImage(
                           imageFile!,
-                          completeprofilecontroller.text.toString(),
-                          widget.firebaseuser,
-                          widget.userModel);
-                    }
-                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
-                  }
-                },
-                color: Colors.orange[600],
+                        ),
+                        radius: 10.h,
+                      )
+                          : CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        radius: 10.0.h,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: CachedNetworkImageProvider(
+                                widget.userModel.profilepic.toString(),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ))),
+              SizedBox(height: 2.h,width: double.infinity,),
+              CustomAuthenticationTextField(
+                textFieldController: emailController,
+                labelText: 'E-mail',
+                icon: Icons.alternate_email_rounded,
+                onChange: () {},
+              ),
+              SizedBox(height: 3.h,width: double.infinity,),
+              CustomAuthenticationTextField(
+                textFieldController: nameController,
+                labelText: 'Full Name',
+                icon: Icons.person_2_outlined,
+                onChange: () {},
+              ),
+              SizedBox(height: 3.h,width: double.infinity,),
+              MaterialButton(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 height: 7.h,
-                minWidth: 30.w,
+                minWidth: 50.w,
+                onPressed: () {
+                  CompleteProfile.uploadProfilePic(context, imageFile!, emailController.text.trim().toString(), nameController.text.trim().toString(), widget.firebaseuser, widget.userModel);
+                },
+                color: Color(0xffffbd30),
                 child: Text(
-                  "Submit",
+                  "Update",
                   style: TextStyle(
-                      fontSize: 2.3.h,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ],
           ),
         ),
       ),
-    ));
+    );
   }
 }

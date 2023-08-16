@@ -33,8 +33,11 @@ class _SplashScreenState extends State<SplashScreen> {
           // Get.to(Home(userModel: fetchedUserModel, firebaseuser: currentuser));
         });
       }
-    } else {
-      Timer(Duration(seconds: 4), () {
+    }
+    else {
+      Timer(
+
+          Duration(seconds: 4), () {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => LoginPage()));
       });
@@ -42,8 +45,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   initState() {
-    // User? currentuser=FirebaseAuth.instance.currentUser;
-    // currentuser?.delete();
+  //  _googleSignIn.signOut();
+
     checkUsers();
 
     super.initState();

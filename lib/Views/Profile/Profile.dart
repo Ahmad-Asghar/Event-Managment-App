@@ -3,16 +3,17 @@ import 'package:e_commerce/Models/UserModel.dart';
 import 'package:e_commerce/Views/Events_Joined.dart';
 import 'package:e_commerce/Views/Events_created.dart';
 import 'package:e_commerce/Views/LoginwithGmail/LoginPage.dart';
+import 'package:e_commerce/Views/Profile/update_profile.dart';
 import 'package:e_commerce/Views/splash_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import '../Localization/code/local_keys.g.dart';
-import 'LoginwithGmail/SignUpPage.dart';
+import '../../Localization/code/local_keys.g.dart';
+import '../LoginwithGmail/SignUpPage.dart';
 
 class Profile extends StatefulWidget {
   final UserModel userModel;
@@ -26,6 +27,8 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin  {
   late TabController _tabController;
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   void initState() {
@@ -87,10 +90,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin  
                                 Text(LocaleKeys.profile,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 3.h),).tr(),
                                 IconButton(
                                   onPressed: () {
+                                    _googleSignIn.signOut();
                                     FirebaseAuth.instance
                                         .signOut()
                                         .then((value) {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
                                     });
                                   },
                                   icon: Icon(Icons.logout),
@@ -143,14 +147,25 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin  
                                     SizedBox(
                                       height: 0.5.h,
                                     ),
-                                    Text(
-                                      widget.userModel.email.toString(),
-                                      style: TextStyle(
-                                        fontSize: 2.h,
-                                      ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Icon(Icons.edit,color:Colors.transparent,),
+                                        Text(
+                                          widget.userModel.email.toString(),
+                                          style: TextStyle(
+                                            fontSize: 2.h,
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                            onTap: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateProfile(userModel: widget.userModel, firebaseuser: widget.firebaseuser,)));
+                                            },
+                                            child: Icon(Icons.edit,color:Colors.orange[300],))
+                                      ],
                                     ),
                                     SizedBox(
-                                      height: 3.5.h,
+                                      height: 2.5.h,
                                     )
                                   ],
                                 ),
@@ -161,10 +176,19 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin  
                         CircleAvatar(
                           backgroundColor: Colors.white,
                           radius: 6.3.h,
-                          child: CircleAvatar(
+                          child:widget.userModel.profilepic!=""? CircleAvatar(
                             backgroundImage: CachedNetworkImageProvider(
                                 widget.userModel.profilepic.toString()),
                             radius: 6.h,
+                          ):Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage("images/minion.jpg"),
+                                )
+                              ),
+                            ),
                           ),
                         )
                       ],
@@ -172,7 +196,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin  
                   ),
                 ],
               ),
-              Text(LocaleKeys.hello).tr(),
+             // Text(LocaleKeys.hello).tr(),
               Text(
                   LocaleKeys.user_info,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 2.5.h),

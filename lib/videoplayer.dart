@@ -91,3 +91,113 @@
 //     }
 //   }
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import 'package:flutter/material.dart';
+// import 'package:lottie/lottie.dart';
+// class AnimatedButton extends StatefulWidget {
+//   @override
+//   _AnimatedButtonState createState() => _AnimatedButtonState();
+// }
+//
+// class _AnimatedButtonState extends State<AnimatedButton> {
+//   // bool _expanded = false;
+//   // int _value = 0;
+//   //
+//   // void _toggleExpand() {
+//   //   setState(() {
+//   //     _expanded = !_expanded;
+//   //   });
+//   // }
+//   //
+//   // void _increment() {
+//   //   setState(() {
+//   //     _value++;
+//   //   });
+//   // }
+//   //
+//   // void _decrement() {
+//   //   setState(() {
+//   //     if (_value > 0) {
+//   //       _value--;
+//   //     }
+//   //   });
+//   // }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//       child: Scaffold(
+//         body: Container(
+//           child:
+//           Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               Center(
+//                 // child: Container(
+//                 //
+//                 //   child: AnimatedContainer(
+//                 //     decoration: BoxDecoration(
+//                 //       borderRadius: BorderRadius.circular(50)
+//                 //     ),
+//                 //   duration: const Duration(milliseconds: 300),
+//                 //   width: _expanded ? 70 : 30,
+//                 //   height: 30,
+//                 //   child: _expanded? GestureDetector(
+//                 //     onTap: _toggleExpand,
+//                 //     child: Container(
+//                 //       decoration: BoxDecoration(
+//                 //           color: Colors.orange,
+//                 //         borderRadius: BorderRadius.circular(30)
+//                 //       ),
+//                 //
+//                 //     ),
+//                 //   ):GestureDetector(
+//                 //     onTap: _toggleExpand,
+//                 //     child: CircleAvatar(
+//                 //       child: Icon(Icons.add),
+//                 //     ),
+//                 //   )
+//                 // ),),
+//                 child: Padding(
+//                   padding: EdgeInsets.all(50),
+//                     child: Lottie.asset("images/loading.json")),
+//               )
+//
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -254,10 +254,13 @@ class _MessegesState extends State<Messeges> {
                                                  chatroom: chatrummodel,
                                                  targetuser: targetuser)));
                                             },
-                                            leading: CircleAvatar(
+                                            leading:targetuser.profilepic.toString()!=""? CircleAvatar(
                                               backgroundColor: Colors.white,
                                               backgroundImage: NetworkImage(
                                                   targetuser.profilepic.toString()),
+                                            ):CircleAvatar(
+                                                backgroundImage:
+                                                AssetImage("images/minion.jpg")
                                             ),
                                             title: Text(
                                                 targetuser.fullName.toString()),

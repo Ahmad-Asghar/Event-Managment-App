@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../Localization/code/local_keys.g.dart';
 import '../Models/UserModel.dart';
 import '../Widgets/Event_data_textfield.dart';
-import 'checkProfile.dart';
+import 'Profile/checkProfile.dart';
 
 class Feeds extends StatefulWidget {
   final UserModel userModel;
@@ -90,8 +91,11 @@ class _FeedsState extends State<Feeds> {
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: Padding(
+                        padding: EdgeInsets.all(50),
+                        child: Lottie.asset("images/loading.json")),
                   );
+
                 }
                 filteredData = snapshot.data!.docs
                     .where(
@@ -123,10 +127,14 @@ class _FeedsState extends State<Feeds> {
                                                   .toString(),
                                             )));
                               },
-                              leading: CircleAvatar(
+
+                              leading: filteredData[index]["profilepic"].toString()!=""?CircleAvatar(
                                 backgroundImage: NetworkImage(
                                   filteredData[index]['profilepic'].toString(),
                                 ),
+
+                              ):CircleAvatar(
+                                backgroundImage: AssetImage("images/minion.jpg"),
                               ),
                               title: Text(
                                 filteredData[index]['fullName'].toString(),

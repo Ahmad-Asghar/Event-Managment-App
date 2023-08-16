@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce/Views/nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Models/UserModel.dart';
-import '../../Views/LoginwithGmail/CompleteProfile.dart';
 import '../../Widgets/DialougeBox.dart';
 import '../../Widgets/ErrorDialouge.dart';
 import '../../Widgets/Snackbar.dart';
 class SignUpMethod extends GetxController {
   Snackbar snack = Get.put(Snackbar());
 
-  SignUp(BuildContext context,  String emailcontroller, String passwordcontroller) async {
+  SignUp(BuildContext context,  String emailcontroller, String passwordcontroller,String userName) async {
     showWaitingDialouge(context);
     UserCredential? credential;
     try {
@@ -21,7 +21,7 @@ class SignUpMethod extends GetxController {
       UserModel newmodel = UserModel(
         uid: uid,
         email: emailcontroller,
-        fullName: "",
+        fullName: userName,
         profilepic: "",
       );
       FirebaseFirestore.instance
@@ -31,8 +31,7 @@ class SignUpMethod extends GetxController {
       Navigator.pop(context);
       snack.snackBar("Confirmation", "Successfully Signed In", Colors.blue,
           Colors.white, "images/checked.png");
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>CompleteProfile(
-          userModel: newmodel, firebaseuser: credential!.user!)));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(userModel: newmodel, firebaseuser: credential!.user!, screenNO: 0)));
 
     } on FirebaseAuthException catch (exception) {
       Navigator.pop(context);

@@ -17,6 +17,8 @@ import '../../Widgets/DialougeBox.dart';
 import 'ViewJoinedUsers.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+import 'event_video_player.dart';
+
 class EventDetails extends StatefulWidget {
   final String eventId;
   final UserModel userModel;
@@ -107,11 +109,11 @@ class _EventDetailsState extends State<EventDetails> {
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (!snapshot.hasData || snapshot.data == null) {
-              return Text('No data available');
+              return const Text('No data available');
             }
 
             final data = snapshot.data!.data();
@@ -125,7 +127,7 @@ class _EventDetailsState extends State<EventDetails> {
             int joined = int.parse((event.joined?.length ?? '').toString());
             String remainings = (maxAllowed - joined).toString();
 
-            return Container(
+            return SizedBox(
               height: double.infinity,
               width: double.infinity,
               child: Padding(
@@ -163,6 +165,8 @@ class _EventDetailsState extends State<EventDetails> {
                           decoration: BoxDecoration(
                               color: Colors.grey[400],
                               borderRadius: BorderRadius.circular(15)),
+                          height: 5.h,
+                          width: 12.h,
                           child: Center(
                               child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -172,14 +176,12 @@ class _EventDetailsState extends State<EventDetails> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 2.h),
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.arrow_drop_down_outlined,
                                 color: Colors.black,
                               )
                             ],
                           )),
-                          height: 5.h,
-                          width: 12.h,
                         ),
                       ),
                       Row(
@@ -189,22 +191,24 @@ class _EventDetailsState extends State<EventDetails> {
                                 border:
                                     Border.all(color: Colors.blue, width: 3),
                                 borderRadius: BorderRadius.circular(15)),
+                            height: 5.h,
+                            width: 8.h,
                             child: Center(
                                 child: Text(
                               eventStartTime,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 2.h),
                             )),
-                            height: 5.h,
-                            width: 8.h,
                           ),
                           SizedBox(
                             width: 4.w,
                           ),
-                          Text(
-                            event.eventName.toString(),
-                            style: TextStyle(
-                                fontSize: 4.h, fontWeight: FontWeight.bold),
+                          Expanded(
+                            child: Text(
+                              event.eventName.toString(),
+                              style: TextStyle(
+                                  fontSize: 3.3.h, fontWeight: FontWeight.bold),
+                            ),
                           ),
                           SizedBox(
                             width: 4.w,
@@ -223,12 +227,12 @@ class _EventDetailsState extends State<EventDetails> {
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.location_on_outlined,
                             color: Colors.blue,
                           ),
                           Text(
-                            "Location:  " + event.location.toString(),
+                            "Location:  ${event.location}",
                             style: TextStyle(
                                 fontSize: 2.h, fontWeight: FontWeight.bold),
                           ),
@@ -242,20 +246,20 @@ class _EventDetailsState extends State<EventDetails> {
                         borderRadius: BorderRadius.circular(10),
                         elevation: 10,
                         child: Container(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CachedNetworkImage(
-                              imageUrl: event.eventImage.toString(),
-                              placeholder: (context, url) =>
-                                  Center(child: CircularProgressIndicator()),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10)),
                           height: 25.h,
                           width: double.infinity,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: CachedNetworkImage(
+                              imageUrl: event.eventImage.toString(),
+                              placeholder: (context, url) =>
+                                  const Center(child: CircularProgressIndicator()),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -269,7 +273,7 @@ class _EventDetailsState extends State<EventDetails> {
                       SizedBox(
                         height: 2.h,
                       ),
-                      Container(
+                      SizedBox(
                         height: 16.h,
                         width: double.infinity,
                         child: ListView.builder(
@@ -306,10 +310,11 @@ class _EventDetailsState extends State<EventDetails> {
                                         children: [
                                           VideoPlayer(videoPlayerController),
                                           IconButton(
-                                            icon: Icon(Icons.play_arrow),
+                                            icon: const Icon(Icons.play_arrow),
                                             color: Colors.white,
                                             onPressed: () {
-                                              videoPlayerController.play();
+                                              //videoPlayerController.play();
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>VideoPlayerPage(videoPlayerController: videoPlayerController,)));
                                             },
                                           ),
                                         ],
@@ -346,7 +351,7 @@ class _EventDetailsState extends State<EventDetails> {
                                           children: [
                                             VideoPlayer(_videoPlayerController!),
                                             IconButton(
-                                                icon: Icon(Icons.upload),
+                                                icon: const Icon(Icons.upload),
                                                 color: Colors.white,
                                                 onPressed: () {
                                                   _uploadVideo(widget.eventId);
@@ -387,7 +392,7 @@ class _EventDetailsState extends State<EventDetails> {
                                                     .size
                                                     .height,
                                             image:
-                                                AssetImage("images/upload.png"),
+                                                const AssetImage("images/upload.png"),
                                           ),
                                           SizedBox(
                                             height: 0.02 *
@@ -411,7 +416,7 @@ class _EventDetailsState extends State<EventDetails> {
                                 ),
                               );
                             }
-                            return SizedBox.shrink();
+                            return const SizedBox.shrink();
                           },
                         ),
                       ),
@@ -429,14 +434,14 @@ class _EventDetailsState extends State<EventDetails> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Icon(Icons.remove_red_eye),
+                                const Icon(Icons.remove_red_eye),
                                 SizedBox(
                                   width: 3.w,
                                 ),
                                 Text(
                                   (event.joined?.length.toString() ?? '') +
                                       " People Joined",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -517,7 +522,7 @@ class _EventDetailsState extends State<EventDetails> {
                                             widget.firebaseuser,
                                             event.eventId.toString());
                                       },
-                                      child: Text("Delete Event"),
+                                      child: const Text("Delete Event"),
                                     )
                                   : Text(
                                       "It's not Over....Until I Win!",
@@ -536,7 +541,7 @@ class _EventDetailsState extends State<EventDetails> {
                             height: 7.h,
                             color: Colors.blue[400],
                             onPressed: () {},
-                            child: Text("Invite Friends"),
+                            child: const Text("Invite Friends"),
                           )),
                         ],
                       ),
